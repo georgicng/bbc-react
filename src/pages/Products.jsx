@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { useGetProductsQuery } from "../services/product";
+import { useGetProductsQuery } from "../services/products";
 import ErrorBanner from "../components/ErrorBanner";
 import ProductList from "../components/ProductList";
 import { useGetCategoriesQuery } from "../services/category";
@@ -26,14 +26,14 @@ const Products = () => {
   }
 
   return (
-    <div id="menu-page" class="page-wrapper innerpage-section-padding">
-      <div class="container text-center menu">
-        <div class="innerpage-heading">
+    <div id="menu-page" className="page-wrapper innerpage-section-padding">
+      <div className="container text-center menu">
+        <div className="innerpage-heading">
           <h3>{title}</h3>
-          <hr class="page-heading-line" />
+          <hr className="page-heading-line" />
         </div>
 
-        <div id="breakfast-dishes" class="no-back">
+        <div id="breakfast-dishes" className="no-back">
           <ProductList products={products} />
         </div>
       </div>

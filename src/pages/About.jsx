@@ -9,20 +9,20 @@ const About = () => {
   ];
 
   return (
-    <section class="page-wrapper innerpage-section-padding">
+    <section className="page-wrapper innerpage-section-padding">
       <div id="contact-page">
-        <div class="container-fluid">
-          <div class="innerpage-heading text-center">
+        <div className="container-fluid">
+          <div className="innerpage-heading text-center">
             <h3>{title}</h3>
-            <hr class="page-heading-line" />
+            <hr className="page-heading-line" />
             <p>{subtitle}</p>
           </div>
 
-          <div class="no-back">
-            <div class="row">
-              <div class="col-sm-12 offset-lg-2 col-lg-8">
-                {paragrapghs.map((p) => (
-                  <p>{p}</p>
+          <div className="no-back">
+            <div className="row">
+              <div className="col-sm-12 offset-lg-2 col-lg-8">
+                {paragrapghs.map((p, index) => (
+                  <p key={index}>{p}</p>
                 ))}
               </div>
             </div>

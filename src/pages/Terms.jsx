@@ -1,6 +1,7 @@
 const Terms = () => {
-  const title = 'Terms and Conditions'
-  const subtitle = 'Thanks for your interest in butterbakes cakes. Before you proceed with your order we would like you to be familiar with a our processes and mode of operations.'
+  const title = "Terms and Conditions";
+  const subtitle =
+    "Thanks for your interest in butterbakes cakes. Before you proceed with your order we would like you to be familiar with a our processes and mode of operations.";
   const Terms = {
     affordable:
       "We produce quick retail cakes, and the most affordable rates we can possibly offer.",
@@ -32,23 +33,22 @@ const Terms = () => {
     report:
       "Please report all unsatisfactory transaction via email at butterbakescakes@gmail.com.",
   };
-  
+
   return (
-    <section class="page-wrapper innerpage-section-padding">
+    <section className="page-wrapper innerpage-section-padding">
       <div id="tos-page">
-        <div class="container-fluid">
-          <div class="innerpage-heading  text-center">
-            <h3>{ title }</h3>
-            <hr class="page-heading-line" />
+        <div className="container-fluid">
+          <div className="innerpage-heading  text-center">
+            <h3>{title}</h3>
+            <hr className="page-heading-line" />
           </div>
-          <div class="no-back">
-            <div class="row">
-              <div class="col-sm-12 offset-lg-2 col-lg-8">
-                <p>{ subtitle }                 
-                </p>
-                <ul class="term-list">
-                  {Object.values(Terms).map((term) => (
-                    <li>{ term }</li>
+          <div className="no-back">
+            <div className="row">
+              <div className="col-sm-12 offset-lg-2 col-lg-8">
+                <p>{subtitle}</p>
+                <ul className="term-list">
+                  {Object.entries(Terms).map(([key, value]) => (
+                    <li key={key}>{value}</li>
                   ))}
                 </ul>
               </div>

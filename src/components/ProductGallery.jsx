@@ -4,10 +4,10 @@ const ProductGallery = ({ product }) => {
   return (
     <ul
       id="menu-gallery"
-      class="gallery list-unstyled cS-hidden menu-gallery text-center"
+      className="gallery list-unstyled cS-hidden menu-gallery text-center"
     >
       <li data-thumb={getImage(product)}>
-        <div class="p-img">
+        <div className="p-img">
           <img src={getImage(product)} alt={product.name} />
         </div>
       </li>

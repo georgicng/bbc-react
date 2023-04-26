@@ -4,20 +4,20 @@ const ProductOptions = ({ options, model, onChange }) => {
   return (
     <form id="productform">
       {options.map((option) => (
-        <div class="form-group" key={option.name} data-option={option.id}>
+        <div className="form-group" key={option.name} data-option={option.id}>
           {option.type == OPTION_TYPE_MAP.TEXTBOX && (
             <div>
-              <label htmlFor={option.id} class="font-weight-bold">
+              <label htmlFor={option.id} className="font-weight-bold">
                 {option.name}
               </label>
 
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 name={option.name}
                 id={option.id}
                 value={model[option.name]}
-                maxlength={option.maximum || null}
+                maxLength={option.maximum || null}
                 onChange={(e) => onChange(option.name, e.target.value)}
               />
             </div>
@@ -25,7 +25,7 @@ const ProductOptions = ({ options, model, onChange }) => {
 
           {option.type == OPTION_TYPE_MAP.SELECT && (
             <div>
-              <label htmlFor={option.name} class="font-weight-bold">
+              <label htmlFor={option.name} className="font-weight-bold">
                 {option.name}
               </label>
               <multiselect
@@ -43,20 +43,20 @@ const ProductOptions = ({ options, model, onChange }) => {
 
           {option.type == OPTION_TYPE_MAP.RADIO && (
             <div>
-              <label htmlFor={option.id} class="font-weight-bold">
+              <label htmlFor={option.id} className="font-weight-bold">
                 {option.name}
               </label>
               {option.options.map((value) => (
-                <div class="custom-control custom-radio" key={value.id}>
+                <div className="custom-control custom-radio" key={value.id}>
                   <input
                     type="radio"
-                    class="custom-control-input"
+                    className="custom-control-input"
                     name={option.name}
                     id={value.id}
                     value={value.value}
                     onChange={(e) => onChange(option.name, e.target.value)}
                   />
-                  <label class="custom-control-label" htmlFor={value.id}>
+                  <label className="custom-control-label" htmlFor={value.id}>
                     {value.label}
                   </label>
                 </div>
@@ -66,7 +66,7 @@ const ProductOptions = ({ options, model, onChange }) => {
 
           {option.type == OPTION_TYPE_MAP.CHECKBOX && (
             <div>
-              <label htmlFor={option.name} class="font-weight-bold">
+              <label htmlFor={option.name} className="font-weight-bold">
                 {option.name}
               </label>
               <multiselect
@@ -87,11 +87,11 @@ const ProductOptions = ({ options, model, onChange }) => {
 
           {option.type == OPTION_TYPE_MAP.TEXTAREA && (
             <div>
-              <label htmlFor={option.name} class="font-weight-bold">
+              <label htmlFor={option.name} className="font-weight-bold">
                 {option.name}
               </label>
               <textarea
-                class="form-control"
+                className="form-control"
                 id={option.name}
                 value={model[option.name]}
                 onChange={(e) => onChange(option.name, e.target.value)}

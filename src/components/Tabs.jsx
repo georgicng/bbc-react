@@ -1,44 +1,50 @@
 import { SIZES } from "../config";
 
 const Tabs = ({ description }) => {
+  /* 
   const tabs = [
     { key: "description", title: "Description" },
     { key: "size", title: "Size Examples" },
-  ];
-  
+  ]; */
+
   return (
-    <div class="row my-4">
-      <div class="offset-lg-2 col-lg-8">
-        <ul class="nav nav-tabs justify-content-start">
-          <li class="nav-item">
-            <a class="nav-link active" href="#description" data-toggle="tab">
+    <div className="row my-4">
+      <div className="offset-lg-2 col-lg-8">
+        <ul className="nav nav-tabs justify-content-start">
+          <li className="nav-item">
+            <a
+              className="nav-link active"
+              href="#description"
+              data-toggle="tab"
+            >
               Description
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#size" data-toggle="tab">
+          <li className="nav-item">
+            <a className="nav-link" href="#size" data-toggle="tab">
               Size Examples
             </a>
           </li>
         </ul>
 
-        <div class="tab-content">
-          <div id="description" class="tab-pane active">
+        <div className="tab-content">
+          <div id="description" className="tab-pane active">
             <div
-              class="my-4"
+              className="my-4"
               dangerouslySetInnerHTML={{ __html: description }}
             ></div>
           </div>
-          <div id="size" class="tab-pane">
+          <div id="size" className="tab-pane">
             <div
               id="img-tab"
-              class="nav nav-pills my-4 justify-content-center"
+              className="nav nav-pills my-4 justify-content-center"
               role="tablist"
             >
               {SIZES.map((size) => (
                 <a
+                  key={size.id}
                   href={`#${size.id}`}
-                  class="nav-item nav-link active"
+                  className="nav-item nav-link active"
                   data-toggle="tab"
                   role="tab"
                 >
@@ -46,10 +52,10 @@ const Tabs = ({ description }) => {
                 </a>
               ))}
             </div>
-            <div class="tab-content my-5">
+            <div className="tab-content my-5">
               {SIZES.map((size) => (
-                <div class="tab-pane active" id={size.id} role="tabpanel">
-                  <img class="img-fluid" src={size.image} />
+                <div key={size.id} className="tab-pane active" id={size.id} role="tabpanel">
+                  <img className="img-fluid" src={size.image}  alt="size diagram" />
                 </div>
               ))}
             </div>

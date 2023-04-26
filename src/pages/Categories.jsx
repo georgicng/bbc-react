@@ -20,20 +20,20 @@ const Categories = () => {
   }
 
   return (
-    <section class="page-wrapper innerpage-section-padding">
+    <section className="page-wrapper innerpage-section-padding">
       <div id="categories-page">
-        <div class="container" id="categories">
-          <div class="row">
+        <div className="container" id="categories">
+          <div className="row">
             {categories.map((item) => (
-              <div key={item.id} class="col-md-6 col-lg-4 col-xl-3 my-3">
+              <div key={item.id} className="col-md-6 col-lg-4 col-xl-3 my-3">
                 <Link to={getLink(item)}>
-                  <div class="card">
+                  <div className="card">
                     <img
-                      class="w-100"
+                      className="w-100"
                       src={getImage(item)}
-                      alt="Card image cap"
+                      alt="Category icon"
                     />
-                    <div class="btn view-btn">{item.name}</div>
+                    <div className="btn view-btn">{item.name}</div>
                   </div>
                 </Link>
               </div>

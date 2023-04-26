@@ -3,19 +3,19 @@ import ProductGallery from "../components/ProductGallery";
 import ProductOptions from "../components/ProductOptions";
 import ErrorBanner from "../components/ErrorBanner";
 import { useParams } from "react-router-dom";
-import { useGetProductQuery } from "../services/product";
+import { useGetProductQuery } from "../services/products";
 import { useState } from "react";
 import { OPTION_VALUE_MAP, OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
 
 const Title = ({ name, price }) => {
   return (
-    <div class="menu-detail offset-lg-2 col-lg-8">
-      <div class="menu-title">
-        <div class="menu-name">
+    <div className="menu-detail offset-lg-2 col-lg-8">
+      <div className="menu-title">
+        <div className="menu-name">
           <p>Name</p>
           <h3>{name}</h3>
         </div>
-        <div class="menu-price">
+        <div className="menu-price">
           <p>Price</p>
           <h3>N{price}</h3>
         </div>
@@ -53,7 +53,7 @@ const Product = () => {
         }
       : {}),
   }));
-  const normalPrice = parseFloat(produuct.price);
+  const normalPrice = parseFloat(product.price);
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(normalPrice);
   const [model, setModel] = useState(
@@ -62,6 +62,7 @@ const Product = () => {
       {}
     )
   );
+  const multi = false;
 
   const getOptionIncrement = (option, value) => {
     const candidate = options.find((item) => item.name === option);
@@ -118,47 +119,50 @@ const Product = () => {
 
   return (
     <div id="menu-detail-page">
-      <div class="container-fluid">
+      <div className="container-fluid">
         <Title name={product.name} price={product.price} />
-        <div class="no-back">
-          <div class="row">
-            <div class="col-sm-12 col-md-6 offset-lg-2 col-lg-4  mb-4">
+        <div className="no-back">
+          <div className="row">
+            <div className="col-sm-12 col-md-6 offset-lg-2 col-lg-4  mb-4">
               <ProductGallery product={product} />
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
-              <div class="menu-info">
-                <div class="form">
+            <div className="col-sm-12 col-md-6 col-lg-4 mb-4">
+              <div className="menu-info">
+                <div className="form">
                   <ProductOptions
                     options={options}
                     model={model}
                     onChange={handleChange}
                   />
-                  <div class="form-group" v-if="multi">
-                    <label class="font-weight-bold">Quantity :</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="quantity"
-                      name="quantity"
-                      min="1"
-                      max="100"
-                      value={quantity}
-                      onChange={(e) => handleChange("quantity", e.target.value)}
-                    />
+                  {multi && (
+                    <div className="form-group">
+                      <label htmlFor="quantity" className="font-weight-bold">
+                        Quantity :
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="quantity"
+                        name="quantity"
+                        min="1"
+                        max="100"
+                        value={quantity}
+                        onChange={(e) =>
+                          handleChange("quantity", e.target.value)
+                        }
+                      />
+                    </div>
+                  )}
+
+                  <div className="form-group">
+                    <span className="font-weight-bold">Total :</span>
+                    <span className="price">N{price}</span>
                   </div>
-                  <div class="form-group">
-                    <label class="font-weight-bold">Total :</label>
-                    <span class="price">N{price}</span>
-                  </div>
-                  <div
-                    class="error"
-                    v-show="showErrors"
-                    v-html="errorMessages"
-                  ></div>
-                  <button onClick={addToCart} class="btn btn-orange">
+                  <div className="error">Show error here</div>
+                  <button onClick={addToCart} className="btn btn-orange">
                     Add to cart
                     <span>
-                      <i class="fa fa-shopping-cart"></i>
+                      <i className="fa fa-shopping-cart"></i>
                     </span>
                   </button>
                 </div>
