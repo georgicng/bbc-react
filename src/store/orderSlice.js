@@ -6,17 +6,17 @@ export const orderSlice = createSlice({
      cart: [], shipping: 0, payment: 0, express: false, coupon: false,
   },
   reducers: {
-    addToCart: (state, action) => {
+    add: (state, action) => {
       state.cart.push(action);
     },
-    removeFromCart: (state, action) => {
+    remove: (state, action) => {
       //action is cart index
       state.cart.splice(action, 1);
     },
-    updateCartItem: (state, payload) => {
+    update: (state, payload) => {
       state.cart[payload.index].quantity = payload.quantity;
     },
-    clearCart: (state) => {
+    clear: (state) => {
       state.cart = [];
     },
     addShippingAddress: (state, payload) => {
@@ -40,6 +40,6 @@ export const orderSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateCartItem } = orderSlice.actions;
+export const { add, remove, update } = orderSlice.actions;
 
 export default orderSlice.reducer;

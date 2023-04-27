@@ -4,8 +4,11 @@ import ProductOptions from "../components/ProductOptions";
 import ErrorBanner from "../components/ErrorBanner";
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../services/products";
+import { add } from "../store/orderSlice";
 import { useState } from "react";
 import { OPTION_VALUE_MAP, OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
+import { getOptions, getOptionIncrement } from "../utils";
+import { useDispatch } from "react-redux";
 
 const Title = ({ name, price }) => {
   return (
@@ -25,34 +28,16 @@ const Title = ({ name, price }) => {
 };
 
 const Product = () => {
-  //TODO: unselect, validation, increment object map, add to cart, imer
+  //TODO: unselect, validation, add to cart, imer
   const { id } = useParams();
+  const dispatch = useDispatch();
   const {
     data: product,
     isLoading,
     error,
     refetch,
   } = useGetProductQuery({ id });
-  const options = product.options.data.map((input) => ({
-    id: input.option_id.data.id,
-    name: input.option_id.data.slug,
-    label: input.option_id.data.name,
-    required: input.required,
-    maximum: input.maximum,
-    minimum: input.minimum,
-    increment: input.price_increment,
-    type: input.option_id.data.type,
-    ...(input.option_id.data.type === OPTION_TYPE_MAP.CHECKBOX
-      ? {
-          options: input.option_values.data.map((value) => ({
-            id: value.option_value.data.id,
-            value: value.option_value.data.value,
-            label: value.option_value.data.value,
-            increment: value.price_increment,
-          })),
-        }
-      : {}),
-  }));
+  const options = getOptions(product, OPTION_TYPE_MAP);
   const normalPrice = parseFloat(product.price);
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(normalPrice);
@@ -62,35 +47,17 @@ const Product = () => {
       {}
     )
   );
+  const description = ""; //Generate from model
   const multi = false;
-
-  const getOptionIncrement = (option, value) => {
-    const candidate = options.find((item) => item.name === option);
-
-    if (!candidate) {
-      return 0;
-    }
-
-    if (!Array.isArray(value)) {
-      return parseFloat(candidate.increment);
-    }
-
-    let sum = candidate.options
-      .filter((item) => value.includes(item.value))
-      .reduce((acc, item) => {
-        return (acc += parseFloat(item.increment));
-      }, 0);
-
-    if (option === OPTION_VALUE_MAP.FLAVOUR && value?.length > 2) {
-      sum += 1000;
-    }
-
-    return sum;
-  };
 
   const calculateTotalIncrement = (model) =>
     Object.keys(model).reduce((acc, key) => {
-      return (acc += getOptionIncrement(key, model[key]));
+      return (acc += getOptionIncrement(
+        key,
+        model[key],
+        options,
+        OPTION_VALUE_MAP
+      ));
     }, 0);
 
   const handleChange = (key, value) => {
@@ -106,7 +73,7 @@ const Product = () => {
   };
 
   const addToCart = () => {
-    //TODO import cart store
+    dispatch(add({ line: { ...product, description }, quantity, price }));
   };
 
   if (isLoading) {

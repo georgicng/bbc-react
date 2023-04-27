@@ -2,15 +2,19 @@ import { Link } from "react-router-dom";
 import CartItems from "../components/CartItems";
 import Coupon from "../components/Coupon";
 import CartTotals from "../components/CartTotals";
+import { remove, update } from "../store/orderSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Cart = () => {
   //TODO: import cartslice and map to variables
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.order.cart);
   const count = 0;
   const discount = 0;
-  const cart = [];
 
   const handleChange = (key, value) => {
     console.log({ key, value });
+    dispatch(update())
   };
 
   return (

@@ -1,8 +1,9 @@
 import { OPTION_TYPE_MAP } from "../config";
+import Multiselect from 'multiselect-react-dropdown';
 
 const ProductOptions = ({ options, model, onChange }) => {
   return (
-    <form id="productform">
+    <div id="productform">
       {options.map((option) => (
         <div className="form-group" key={option.name} data-option={option.id}>
           {option.type == OPTION_TYPE_MAP.TEXTBOX && (
@@ -28,16 +29,12 @@ const ProductOptions = ({ options, model, onChange }) => {
               <label htmlFor={option.name} className="font-weight-bold">
                 {option.name}
               </label>
-              <multiselect
-                track-by="id"
-                label="name"
-                selectLabel="Click to select"
-                deselectLabel="Click to remove"
-                value={model[option.name]}
+              <Multiselect
+                selectedValues={model[option.name]}
                 options={option.options}
-                searchable="false"
-                onChange={(e) => onChange(option.name, e.target.value)}
-              ></multiselect>
+                singleSelect={true}
+                onSelect={(e) => onChange(option.name, e.target.value)}
+              ></Multiselect>
             </div>
           )}
 
@@ -69,18 +66,11 @@ const ProductOptions = ({ options, model, onChange }) => {
               <label htmlFor={option.name} className="font-weight-bold">
                 {option.name}
               </label>
-              <multiselect
-                multiple="true"
-                track-by="id"
-                label="name"
-                id={option.name}
-                selectLabel="Click to select"
-                deselectLabel="Click to remove"
-                max={option.maximum}
-                value={model[option.name]}
+              <Multiselect
+                selectedValues={model[option.name]}
                 options={option.options}
-                searchable="false"
-                onChange={(e) => onChange(option.name, e.target.value)}
+                showCheckbox={true}
+                onSelect={(e) => onChange(option.name, e.target.value)}
               />
             </div>
           )}
@@ -100,7 +90,7 @@ const ProductOptions = ({ options, model, onChange }) => {
           )}
         </div>
       ))}
-    </form>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-const Coupon = ({ coupon, onClick }) => {
+const Coupon = ({ coupon, addCoupon }) => {
   //TODO: implement local state for coupon uncontrolled form
   return (
     <div className="card coupon">
@@ -14,18 +14,24 @@ const Coupon = ({ coupon, onClick }) => {
         </a>
       </div>
       <div className="collapse" id="collapseExample">
-        <form className="card-body">
+        <form
+          className="card-body"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            addCoupon(formData.get("coupon"));
+          }}
+        >
           <div className="form-group">
             <label htmlFor="coupon">Enter Promo Code</label>
             <input
               type="text"
+              name="coupon"
               className="form-control"
               id="coupon"
               value={coupon}
             />
-            <button onClick={() => onClick('coupon', coupon)} className="my-3 btn btn-orange">
-              Redeem
-            </button>
+            <button className="my-3 btn btn-orange">Redeem</button>
           </div>
         </form>
       </div>
