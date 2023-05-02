@@ -3,6 +3,7 @@ import { useGetProductsQuery } from "../services/products";
 import ErrorBanner from "../components/ErrorBanner";
 import ProductList from "../components/ProductList";
 import { useGetCategoriesQuery } from "../services/category";
+import ReactPaginate from "react-paginate";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
@@ -13,9 +14,14 @@ const Products = () => {
     refetch,
   } = useGetProductsQuery({ category: searchParams.get("category") });
   const { data: categories } = useGetCategoriesQuery(null);
-  const title = categories?.find(
-    (cat) => cat.id == searchParams.get("category")
-  )?.name || searchParams.get("category");
+  const title =
+    categories?.find((cat) => cat.id == searchParams.get("category"))?.name ||
+    searchParams.get("category");
+
+  const handlePageClick = () => {
+    // TODO: call endpoint
+    console.log("page clicked");
+  };
 
   if (isLoading) {
     return <div>Loading posts...</div>;
@@ -35,6 +41,15 @@ const Products = () => {
 
         <div id="breakfast-dishes" className="no-back">
           <ProductList products={products} />
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+          />
         </div>
       </div>
     </div>

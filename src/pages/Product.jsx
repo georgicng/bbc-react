@@ -28,7 +28,7 @@ const Title = ({ name, price }) => {
 };
 
 const Product = () => {
-  //TODO: unselect, validation, add to cart, imer
+  //TODO: validation, imer
   const { id } = useParams();
   const dispatch = useDispatch();
   const {
@@ -40,6 +40,8 @@ const Product = () => {
   const options = getOptions(product, OPTION_TYPE_MAP);
   const normalPrice = parseFloat(product.price);
   const [quantity, setQuantity] = useState(1);
+  const [valid, setValid] = useState(1);
+  const [errorMessages, setErrorMessages] = useState(1);
   const [price, setPrice] = useState(normalPrice);
   const [model, setModel] = useState(
     options.reduce(
@@ -47,7 +49,6 @@ const Product = () => {
       {}
     )
   );
-  const description = ""; //Generate from model
   const multi = false;
 
   const calculateTotalIncrement = (model) =>
@@ -60,20 +61,46 @@ const Product = () => {
       ));
     }, 0);
 
+    const validate = () => {
+      let valid = true;
+      let errorMessages = "";
+      if (options) {
+        options.forEach(option => {
+          if (option.required && !model[option.slug]) {
+            if (
+              option.type == "checkbox" &&
+              model[option.slug].lenght > 0
+            ) {
+            }
+            valid = false;
+            errorMessages += `Please specify a ${option.name}<br>`;
+          }
+        });
+        if (multi && !quantity) {
+          valid = false;
+          errorMessages += `Please specify the quantity<br>`;
+        }
+      }
+      setValid(valid)
+      setErrorMessages(errorMessages)
+    }
+
   const handleChange = (key, value) => {
     if (key === OPTION_KEY_MAP.QUANTITY) {
       setQuantity(value);
     } else {
       setModel({
         ...model,
-        [key]: Array.isArray(model[key]) ? [...model[key], value] : value,
+      // NOTE: for multiple option items, send collection and not individual items to avoid need for mutaion
+        [key]: value,
       });
     }
     setPrice((calculateTotalIncrement() + normalPrice) * quantity);
+    validate();
   };
 
   const addToCart = () => {
-    dispatch(add({ line: { ...product, description }, quantity, price }));
+    dispatch(add({ line: product, options: model, quantity, price }));
   };
 
   if (isLoading) {

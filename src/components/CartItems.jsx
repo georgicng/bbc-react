@@ -1,6 +1,23 @@
 import { getImage } from "../utils";
 
-const CartItem = ({ line, price, quantity, onChange }) => {
+const LineOptions = ({ options }) => {
+  return (
+    <>
+      {Object.entries(options).map(([key, value]) => (
+        <div className="tag">
+          {key}:
+          {Array.isArray(value) ? (
+            value.map((item) => <div className="tagItem">{item}</div>)
+          ) : (
+            <div className="tagItem">{value}</div>
+          )}
+        </div>
+      ))}
+    </>
+  );
+};
+
+const CartItem = ({ line, price, quantity, options, onChange }) => {
   return (
     <div className="cart-item">
       <div className="item-text dish-list-text">
@@ -16,21 +33,21 @@ const CartItem = ({ line, price, quantity, onChange }) => {
             onChange={(e) => onChange("update", e.target.value)}
             className="form-control"
           />{" "}
-          x N{line.price}
+          x N{price}
         </div>
       </div>
 
       <div className="item-img">
         <figure>
           <img
-            src={getImage(line.product)}
+            src={getImage(line)}
             className="img-responsive"
             alt={line.name}
           />
         </figure>
       </div>
 
-      <div className="d-flex flex-wrap">{line.description}</div>
+      <div className="d-flex flex-wrap"><LineOptions options={options} /></div>
       <div className="total">
         Total: <span>N{price}</span>
       </div>
