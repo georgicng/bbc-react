@@ -1,40 +1,4 @@
-const CONTACTS = [
-  {
-    icon: "fa-phone",
-    type: "phone",
-    link: "tel:+2348149750282",
-    value: "+2348149750282",
-  },
-  {
-    icon: "fa-envelope",
-    type: "email",
-    link: "mailto:butterbakescakes@gmail.com",
-    value: "butterbakescakes@gmail.com",
-  },
-];
-
-const SOCIALS = [
-  {
-    icon: "fa-facebook-f",
-    type: "facebook",
-    link: "#",
-  },
-  {
-    icon: "fa-instagram",
-    type: "instagram",
-    link: "//instagram.com/butterbakesng",
-  },
-  {
-    icon: "fa-twitter",
-    type: "twitter",
-    link: "#",
-  },
-  {
-    icon: "fa-google-plus-g",
-    type: "google-plus",
-    link: "#",
-  },
-];
+import { CONTACTS, SOCIALS } from "../../config";
 
 const TopBar = ({ contacts = CONTACTS, socials = SOCIALS }) => {
   return (

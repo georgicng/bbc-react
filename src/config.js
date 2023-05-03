@@ -28,22 +28,22 @@ export const SIZES = [
   {
     id: "inches-6",
     label: "6 Inches",
-    image: "static/images/examples/6-inches.jpg",
+    image: "assets/images/examples/6-inches.jpg",
   },
   {
     id: "inches-8",
     label: "8 Inches",
-    image: "static/images/examples/8-inches.jpg",
+    image: "assets/images/examples/8-inches.jpg",
   },
   {
     id: "inches-10",
     label: "10 Inches",
-    image: "static/images/examples/10-inches.jpg",
+    image: "assets/images/examples/10-inches.jpg",
   },
   {
     id: "inches-12",
     label: "12 Inches",
-    image: "static/images/examples/12-inches.jpg",
+    image: "assets/images/examples/12-inches.jpg",
   },
 ];
 
@@ -52,26 +52,118 @@ export const BLOCKS = [
     key: "category",
     path: "/categories",
     title: "Order a Cake",
-    image: "static/images/banners/cake.jpg",
+    image: "assets/images/banners/cake.jpg",
   },
   {
     key: "term",
     path: "/terms",
     title: "Terms and Conditions",
-    image: "static/images/banners/terms.jpg",
+    image: "assets/images/banners/terms.jpg",
   },
   {
     key: "complain",
     path: "/complaint",
     title: "Lodge a Complaint",
-    image: "static/images/banners/complaint.jpg",
+    image: "assets/images/banners/complaint.jpg",
   },
   {
     key: "contact",
     path: "/contact",
     title: "Contact Us",
-    image: "static/images/banners/contact.jpg",
+    image: "assets/images/banners/contact.jpg",
   },
+];
+
+export const CONTACTS = [
+  {
+    icon: "fa-phone",
+    type: "phone",
+    link: "tel:+2348149750282",
+    value: "+2348149750282",
+  },
+  {
+    icon: "fa-envelope",
+    type: "email",
+    link: "mailto:butterbakescakes@gmail.com",
+    value: "butterbakescakes@gmail.com",
+  },
+];
+
+export const SOCIALS = [
+  {
+    icon: "fa-facebook-f",
+    type: "facebook",
+    link: "#",
+  },
+  {
+    icon: "fa-instagram",
+    type: "instagram",
+    link: "//instagram.com/butterbakesng",
+  },
+  {
+    icon: "fa-twitter",
+    type: "twitter",
+    link: "#",
+  },
+  {
+    icon: "fa-google-plus-g",
+    type: "google-plus",
+    link: "#",
+  },
+];
+
+export const MENU = [
+  {
+    key: "home",
+    path: "/",
+    name: "Home",
+    icon: "fa fa-home",
+  },
+  {
+    key: "products",
+    path: "#",
+    name: "Products",
+    icon: "fas fa-shopping-bag",
+    children: [
+      {
+        key: "all-products",
+        path: "/products",
+        name: "All Products",
+      },
+      {
+        key: "categories",
+        path: "/categories",
+        name: "All Categories",
+      },
+      {
+        key: "category-1",
+        path: "/products?category=1",
+        name: "Buttercream Cakes",
+      },
+      {
+        key: "category-3",
+        path: "/products?category=3",
+        name: "Cakes for Kids",
+      },
+      { key: "category-5", path: "/products?category=5", name: "Cream Cakes" },
+      { key: "custom", path: "/custom", name: "Quick Order Cakes" },
+    ],
+  },
+  { key: "about", path: "/about", name: "About", icon: "fas fa-users" },
+  {
+    key: "contact",
+    path: "/contact",
+    name: "Contact",
+    icon: "fas fa-envelope",
+  },
+  {
+    key: "complaint",
+    path: "/complaint",
+    name: "Support",
+    icon: "fa fa-life-ring",
+  },
+  { key: "faq", path: "/faq", name: "FAQ", icon: "fas fa-question-circle" },
+  { key: "terms", path: "/terms", name: "Terms", icon: "far fa-handshake" },
 ];
 
 export const TERMS = {

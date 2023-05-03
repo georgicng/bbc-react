@@ -1,46 +1,5 @@
 import { Link } from "react-router-dom";
-
-const MENU = [
-  {
-    key: "home",
-    path: "/",
-    name: "Home",
-  },
-  {
-    key: "products",
-    path: "#",
-    name: "Products",
-    children: [
-      {
-        key: "all-products",
-        path: "/products",
-        name: "All Products",
-      },
-      {
-        key: "categories",
-        path: "/categories",
-        name: "All Categories",
-      },
-      {
-        key: "category-1",
-        path: "/products?category=1",
-        name: "Buttercream Cakes",
-      },
-      {
-        key: "category-3",
-        path: "/products?category=3",
-        name: "Cakes for Kids",
-      },
-      { key: "category-5", path: "/products?category=5", name: "Cream Cakes" },
-      { key: "custom", path: "/custom", name: "Quick Order Cakes" },
-    ],
-  },
-  { key: "about", path: "/about", name: "About" },
-  { key: "contact", path: "/contact", name: "Contact" },
-  { key: "complaint", path: "/complaint", name: "Support" },
-  { key: "faq", path: "/faq", name: "FAQ" },
-  { key: "terms", path: "/terms", name: "Terms" },
-];
+import { MENU } from "../../config";
 
 const NavBar = ({ menu = MENU, cartItemsCount }) => {
   return (

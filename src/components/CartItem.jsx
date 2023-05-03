@@ -16,7 +16,7 @@ const CartItem = ({ line, price, quantity, options, onChange }) => {
             value={quantity}
             onChange={(e) => onChange("update", e.target.value)}
             className="form-control"
-          />{" "}
+          />
           x N{price}
         </div>
       </div>

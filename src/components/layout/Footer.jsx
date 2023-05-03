@@ -1,27 +1,5 @@
 import { Link } from "react-router-dom";
-
-const SOCIALS = [
-  {
-    icon: "fa-facebook-f",
-    type: "facebook",
-    link: "#",
-  },
-  {
-    icon: "fa-instagram",
-    type: "instagram",
-    link: "//instagram.com/butterbakesng",
-  },
-  {
-    icon: "fa-twitter",
-    type: "twitter",
-    link: "#",
-  },
-  {
-    icon: "fa-google-plus-g",
-    type: "google-plus",
-    link: "#",
-  },
-];
+import { SOCIALS } from "../../config";
 
 const Footer = ({ socials = SOCIALS, brand = "ButterBakes Cakes" }) => {
   return (
