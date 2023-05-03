@@ -1,6 +1,7 @@
 import Tabs from "../components/Tabs";
 import ProductGallery from "../components/ProductGallery";
 import ProductOptions from "../components/ProductOptions";
+import Title from "../components/Title";
 import ErrorBanner from "../components/ErrorBanner";
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../services/products";
@@ -9,23 +10,6 @@ import { useState } from "react";
 import { OPTION_VALUE_MAP, OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
 import { getOptions, getOptionIncrement } from "../utils";
 import { useDispatch } from "react-redux";
-
-const Title = ({ name, price }) => {
-  return (
-    <div className="menu-detail offset-lg-2 col-lg-8">
-      <div className="menu-title">
-        <div className="menu-name">
-          <p>Name</p>
-          <h3>{name}</h3>
-        </div>
-        <div className="menu-price">
-          <p>Price</p>
-          <h3>N{price}</h3>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Product = () => {
   //TODO: validation, imer

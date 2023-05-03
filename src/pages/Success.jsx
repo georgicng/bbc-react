@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-const Success = () => {
-  const title = "Thank You!";
-  const subtitle = "Your order has been recorded";
-
+const Success = ({
+  title = "Thank You!",
+  subtitle = "Your order has been recorded",
+}) => {
   return (
     <section className="page-wrapper innerpage-section-padding">
       <div id="contact-page">

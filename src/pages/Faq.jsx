@@ -1,8 +1,12 @@
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 import ErrorBanner from "../components/ErrorBanner";
 import { useGetFaqQuery } from "../services/faq";
+import Heading from "../components/Heading";
 
-export default function Faq() {
+export default function Faq({
+  title = "Complaint Desk",
+  subtitle = "Find answers to your questions below",
+}) {
   const { data, isLoading, error, refetch } = useGetFaqQuery(null);
 
   if (isLoading) {
@@ -17,11 +21,7 @@ export default function Faq() {
     <section className="page-wrapper innerpage-section-padding">
       <div id="complaint-page">
         <div className="container-fluid text-center">
-          <div className="innerpage-heading">
-            <h3>Complaint Desk</h3>
-            <hr className="page-heading-line" />
-            <p>Find answers to your questions below.</p>
-          </div>
+          <Heading title={title} subtitle={subtitle} />
           <div className="no-back">
             <div className="row">
               <div className="col-sm-12 offset-lg-2 col-lg-8">

@@ -4,8 +4,9 @@ import Coupon from "../components/Coupon";
 import CartTotals from "../components/CartTotals";
 import { remove, update } from "../store/orderSlice";
 import { useSelector, useDispatch } from "react-redux";
+import Heading from "../components/Heading";
 
-const Cart = () => {
+const Cart = ({ title = "Your Cart" }) => {
   //TODO: import cartslice and map to variables
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.order.cart);
@@ -14,17 +15,14 @@ const Cart = () => {
 
   const handleChange = (key, value) => {
     console.log({ key, value });
-    dispatch(update())
+    dispatch(update());
   };
 
   return (
     <section className="page-wrapper innerpage-section-padding">
       <div id="shopping-cart-page">
         <div className="container-fluid">
-          <div className="innerpage-heading text-center">
-            <h3>Your Cart</h3>
-            <hr className="page-heading-line" />
-          </div>
+          <Heading title={title} />
           <div className="no-back">
             <div className="row">
               <div className="col-sm-12 offset-lg-2 col-lg-8">

@@ -4,6 +4,7 @@ import ErrorBanner from "../components/ErrorBanner";
 import ProductList from "../components/ProductList";
 import { useGetCategoriesQuery } from "../services/category";
 import ReactPaginate from "react-paginate";
+import Heading from "../components/Heading";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
@@ -34,11 +35,7 @@ const Products = () => {
   return (
     <div id="menu-page" className="page-wrapper innerpage-section-padding">
       <div className="container text-center menu">
-        <div className="innerpage-heading">
-          <h3>{title}</h3>
-          <hr className="page-heading-line" />
-        </div>
-
+        <Heading title={title} />
         <div id="breakfast-dishes" className="no-back">
           <ProductList products={products} />
           <ReactPaginate
