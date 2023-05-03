@@ -1,9 +1,9 @@
-export const API_BASE = "http://demo.gaiproject.com.ng/directus";
-export const API_PREFIX = "api";
-export const API_ENDPOINT_PREFIX = "api/1.1/tables";
-export const API_ENDPOINT_SUFFIX = "rows";
-export const API_ROOT = "http://demo.gaiproject.com.ng";
-export const TOKEN = "vpqBqeRX4CGw2OgDdZxv9H26Rw8mIo4Z";
+export const API_BASE = process.env.API_BASE;
+export const API_ROOT = process.env.API_ROOT;
+export const TOKEN = process.env.TOKEN;
+export const API_PREFIX = process.env.API_ENDPOINT_PREFIX;
+export const API_ENDPOINT_PREFIX = process.env.API_ENDPOINT_PREFIX;
+export const API_ENDPOINT_SUFFIX = process.env.API_ENDPOINT_SUFFIX;
 export const PAGE_SIZE = 20;
 export const DEPTH_SIZE = 3;
 export const CUSTOM_PRODUCT_ID = 12;
