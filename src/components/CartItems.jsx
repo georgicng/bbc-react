@@ -4,10 +4,14 @@ const LineOptions = ({ options }) => {
   return (
     <>
       {Object.entries(options).map(([key, value]) => (
-        <div className="tag">
+        <div key={key} className="tag">
           {key}:
           {Array.isArray(value) ? (
-            value.map((item) => <div className="tagItem">{item}</div>)
+            value.map((item) => (
+              <div key={item} className="tagItem">
+                {item}
+              </div>
+            ))
           ) : (
             <div className="tagItem">{value}</div>
           )}
@@ -47,7 +51,9 @@ const CartItem = ({ line, price, quantity, options, onChange }) => {
         </figure>
       </div>
 
-      <div className="d-flex flex-wrap"><LineOptions options={options} /></div>
+      <div className="d-flex flex-wrap">
+        <LineOptions options={options} />
+      </div>
       <div className="total">
         Total: <span>N{price}</span>
       </div>
