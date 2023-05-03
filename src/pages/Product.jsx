@@ -25,7 +25,7 @@ const Product = () => {
   const normalPrice = parseFloat(product.price);
   const [quantity, setQuantity] = useState(1);
   const [valid, setValid] = useState(1);
-  const [errorMessages, setErrorMessages] = useState(1);
+  const [errorBag, setErrorBag] = useState(1);
   const [price, setPrice] = useState(normalPrice);
   const [model, setModel] = useState(
     options.reduce(
@@ -46,27 +46,29 @@ const Product = () => {
     }, 0);
 
     const validate = () => {
+      //TODO: polpulate error bag
       let valid = true;
-      let errorMessages = "";
+      let errorBag = "";
       if (options) {
         options.forEach(option => {
           if (option.required && !model[option.slug]) {
             if (
-              option.type == "checkbox" &&
+              option.type == OPTION_TYPE_MAP.CHECKBOX &&
               model[option.slug].lenght > 0
             ) {
+              console.log()
             }
             valid = false;
-            errorMessages += `Please specify a ${option.name}<br>`;
+            errorBag += `Please specify a ${option.name}<br>`;
           }
         });
         if (multi && !quantity) {
           valid = false;
-          errorMessages += `Please specify the quantity<br>`;
+          errorBag += `Please specify the quantity<br>`;
         }
       }
       setValid(valid)
-      setErrorMessages(errorMessages)
+      setErrorBag(errorBag)
     }
 
   const handleChange = (key, value) => {
