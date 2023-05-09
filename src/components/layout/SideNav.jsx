@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MENU, SOCIALS } from "../../config";
+import { Fragment } from "react";
 
 const SideNav = ({
   socials = SOCIALS,
@@ -44,7 +45,7 @@ const SideNav = ({
           <div className="list-group panel">
             {menu.map((menuItem) =>
               menuItem.children ? (
-                <>
+                <Fragment key={menuItem.key}>
                   <a
                     href={`#menu-${menuItem.key}`}
                     className="list-group-item"
@@ -73,7 +74,7 @@ const SideNav = ({
                       </Link>
                     ))}
                   </div>
-                </>
+                </Fragment>
               ) : (
                 <Link
                   key={menuItem.key}

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { MENU } from "../../config";
 
-const NavBar = ({ menu = MENU, cartItemsCount }) => {
+const NavBar = ({ menu = MENU, cartItemsCount = 0 }) => {
   return (
     <div className="container">
       <div className="row">

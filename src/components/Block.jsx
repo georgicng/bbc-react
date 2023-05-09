@@ -6,7 +6,7 @@ const Block = ({ path, image, title }) => {
       <Link to={path}>
         <div
           className="card-body"
-          style={`height:250px; background-image: url('${image}');`}
+          style={{ height: "250px", backgroundImage: `url('${image}')` }}
         >
           <div className="text-bottom">
             <h2 className="title">{title}</h2>

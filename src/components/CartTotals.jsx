@@ -8,15 +8,15 @@ const CartTotals = ({ link, subtotal, discount, total }) => {
   return (
     <div className="cart-info text-right">
       <h4>
-        Sub-total: <span>N{{ subtotal }}</span>
+        Sub-total: <span>N{ subtotal }</span>
       </h4>
       {discount > 0 && (
         <h4>
-          Discount (coupon): <span>- N{{ discount }}</span>
+          Discount (coupon): <span>- N{ discount }</span>
         </h4>
       )}
       <h4>
-        Total: <span>N{{ total }}</span>
+        Total: <span>N{ total }</span>
       </h4>
       <Link to={`/${link}`} className="btn btn-black">
         {LINK_MAP[link]}
