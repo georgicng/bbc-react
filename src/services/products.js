@@ -31,7 +31,7 @@ export const productService = apiService.injectEndpoints({
       transformResponse: (response, _, { page, category }) => ({
         page: page + 1,
         items: response.data,
-        tota: response.meta.query_total || response.meta.total_entries,
+        total: response.meta.query_total || response.meta.total_entries,
         category,
       }),
     }),

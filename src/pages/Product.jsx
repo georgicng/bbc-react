@@ -5,11 +5,12 @@ import Title from "../components/Title";
 import ErrorBanner from "../components/ErrorBanner";
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../services/products";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { showLoader } from "../store/commonSlice";
 import { add } from "../store/orderSlice";
-import { useState } from "react";
 import { OPTION_VALUE_MAP, OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
 import { getOptions, getOptionIncrement } from "../utils";
-import { useDispatch } from "react-redux";
 
 const Product = () => {
   //TODO: validation, imer
@@ -21,6 +22,7 @@ const Product = () => {
     error,
     refetch,
   } = useGetProductQuery({ id });
+
   const options = getOptions(product, OPTION_TYPE_MAP);
   const normalPrice = parseFloat(product.price);
   const [quantity, setQuantity] = useState(1);
@@ -45,31 +47,31 @@ const Product = () => {
       ));
     }, 0);
 
-    const validate = () => {
-      //TODO: polpulate error bag
-      let valid = true;
-      let errorBag = "";
-      if (options) {
-        options.forEach(option => {
-          if (option.required && !model[option.slug]) {
-            if (
-              option.type == OPTION_TYPE_MAP.CHECKBOX &&
-              model[option.slug].lenght > 0
-            ) {
-              console.log()
-            }
-            valid = false;
-            errorBag += `Please specify a ${option.name}<br>`;
+  const validate = () => {
+    //TODO: polpulate error bag
+    let valid = true;
+    let errorBag = "";
+    if (options) {
+      options.forEach((option) => {
+        if (option.required && !model[option.slug]) {
+          if (
+            option.type == OPTION_TYPE_MAP.CHECKBOX &&
+            model[option.slug].lenght > 0
+          ) {
+            console.log();
           }
-        });
-        if (multi && !quantity) {
           valid = false;
-          errorBag += `Please specify the quantity<br>`;
+          errorBag += `Please specify a ${option.name}<br>`;
         }
+      });
+      if (multi && !quantity) {
+        valid = false;
+        errorBag += `Please specify the quantity<br>`;
       }
-      setValid(valid)
-      setErrorBag(errorBag)
     }
+    setValid(valid);
+    setErrorBag(errorBag);
+  };
 
   const handleChange = (key, value) => {
     if (key === OPTION_KEY_MAP.QUANTITY) {
@@ -77,7 +79,7 @@ const Product = () => {
     } else {
       setModel({
         ...model,
-      // NOTE: for multiple option items, send collection and not individual items to avoid need for mutaion
+        // NOTE: for multiple option items, send collection and not individual items to avoid need for mutaion
         [key]: value,
       });
     }
@@ -89,9 +91,9 @@ const Product = () => {
     dispatch(add({ line: product, options: model, quantity, price }));
   };
 
-  if (isLoading) {
-    return <div>Loading posts...</div>;
-  }
+  useEffect(() => {
+    dispatch(showLoader(isLoading));
+  }, [isLoading]);
 
   if (error) {
     return <ErrorBanner error={error} refetch={refetch} />;

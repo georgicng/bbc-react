@@ -1,17 +1,20 @@
-import { Accordion, AccordionItem } from "@szhsin/react-accordion";
-import ErrorBanner from "../components/ErrorBanner";
+import { useEffect } from "react";
 import { useGetFaqQuery } from "../services/faq";
+import { useDispatch } from "react-redux";
+import { showLoader } from "../store/commonSlice";
+import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 import Heading from "../components/Heading";
+import ErrorBanner from "../components/ErrorBanner";
 
 export default function Faq({
   title = "Complaint Desk",
   subtitle = "Find answers to your questions below",
 }) {
   const { data, isLoading, error, refetch } = useGetFaqQuery(null);
-
-  if (isLoading) {
-    return <div>Loading faqs...</div>;
-  }
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(showLoader(isLoading));
+  }, [isLoading]);
 
   if (error) {
     return <ErrorBanner error={error} refetch={refetch} />;
@@ -26,7 +29,7 @@ export default function Faq({
             <div className="row">
               <div className="col-sm-12 offset-lg-2 col-lg-8">
                 <Accordion>
-                  {data.map((item) => (
+                  {data?.map((item) => (
                     <AccordionItem key={item.id} header={item.question}>
                       {item.answer}
                     </AccordionItem>

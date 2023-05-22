@@ -2,12 +2,12 @@ import TopBar from "./TopBar";
 import NavBar from "./NavBar";
 import Logo from "./Logo";
 
-const Header = () => {
+const Header = ({ cartItemsCount }) => {
   return (
     <div className="header-lg d-none d-lg-block border-bottom">
       <Logo />
       <TopBar />
-      <NavBar />
+      <NavBar cartItemsCount={cartItemsCount} />
     </div>
   );
 };

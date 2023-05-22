@@ -1,22 +1,22 @@
 import CartItems from "../CartItems";
 import CartTotals from "../CartTotals";
 
-const CartDrawer = ({ showCart, orders, onClick }) => {
+const CartDrawer = ({ showCart, cart, toggle }) => {
   return (
     <div
       id="shopping-cart-sidebar"
-      className={`shc-sidebar" ${showCart ? "to-right-toggle" : ""}`}
+      className={`shc-sidebar ${showCart ? "to-right-toggle" : ""}`}
     >
       <div className="sidecart-closebtn">
         <button
           className="btn btn-default"
           id="sidecart-close"
-          onClick={onClick}
+          onClick={toggle}
         >
           &times;
         </button>
       </div>
-      <CartItems orders={orders} />
+      <CartItems cart={cart} />
       <CartTotals link="cart" />
     </div>
   );

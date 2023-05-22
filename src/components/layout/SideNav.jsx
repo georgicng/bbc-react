@@ -7,7 +7,7 @@ const SideNav = ({
   menu = MENU,
   logo = "assets/images/logo_icon.png",
   showNav,
-  onClick,
+  toggle,
 }) => {
   return (
     <div className="sidenav-content">
@@ -37,7 +37,7 @@ const SideNav = ({
             <button
               className="btn btn-default"
               id="sidenav-close"
-              onClick={onClick}
+              onClick={toggle}
             >
               &times;
             </button>
@@ -69,6 +69,7 @@ const SideNav = ({
                         key={subMenu.key}
                         to={subMenu.path}
                         className="list-group-item"
+                        onClick={toggle}
                       >
                         {subMenu.name}
                       </Link>
@@ -80,6 +81,7 @@ const SideNav = ({
                   key={menuItem.key}
                   to={menuItem.path}
                   className="list-group-item"
+                  onClick={toggle}
                 >
                   <span>
                     <i className={`${menuItem.icon} sidebar-icon`}></i>

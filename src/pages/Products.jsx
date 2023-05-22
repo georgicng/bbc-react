@@ -1,20 +1,28 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { showLoader } from "../store/commonSlice";
 import { useSearchParams } from "react-router-dom";
 import { useGetProductsQuery } from "../services/products";
-import ErrorBanner from "../components/ErrorBanner";
-import ProductList from "../components/ProductList";
 import { useGetCategoriesQuery } from "../services/category";
 import ReactPaginate from "react-paginate";
 import Heading from "../components/Heading";
+import ErrorBanner from "../components/ErrorBanner";
+import ProductList from "../components/ProductList";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
   const {
-    data: products,
+    data,
     isLoading,
     error,
     refetch,
   } = useGetProductsQuery({ category: searchParams.get("category") });
-  const { data: categories } = useGetCategoriesQuery(null);
+  const { data: categories } = useGetCategoriesQuery(null);  
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(showLoader(isLoading));
+  }, [isLoading]);
+
   const title =
     categories?.find((cat) => cat.id == searchParams.get("category"))?.name ||
     searchParams.get("category");
@@ -23,10 +31,6 @@ const Products = () => {
     // TODO: call endpoint
     console.log("page clicked");
   };
-
-  if (isLoading) {
-    return <div>Loading posts...</div>;
-  }
 
   if (error) {
     return <ErrorBanner error={error} refetch={refetch} />;
@@ -37,13 +41,13 @@ const Products = () => {
       <div className="container text-center menu">
         <Heading title={title} />
         <div id="breakfast-dishes" className="no-back">
-          <ProductList products={products} />
+          <ProductList products={data?.items || []} />
           <ReactPaginate
             breakLabel="..."
             nextLabel="next >"
             onPageChange={handlePageClick}
             pageRangeDisplayed={5}
-            pageCount={pageCount}
+            pageCount={2}
             previousLabel="< previous"
             renderOnZeroPageCount={null}
           />

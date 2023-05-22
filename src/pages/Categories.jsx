@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom";
-import { getImage, getLink } from "../utils";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { showLoader } from "../store/commonSlice";
 import { useGetCategoriesQuery } from "../services/category";
+import { getImage, getLink } from "../utils";
+import { Link } from "react-router-dom";
 import ErrorBanner from "../components/ErrorBanner";
 
 const Categories = () => {
@@ -10,10 +13,10 @@ const Categories = () => {
     error,
     refetch,
   } = useGetCategoriesQuery(null);
-
-  if (isLoading) {
-    return <div>Loading posts...</div>;
-  }
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(showLoader(isLoading));
+  }, [isLoading]);
 
   if (error) {
     return <ErrorBanner error={error} refetch={refetch} />;

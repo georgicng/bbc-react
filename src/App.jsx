@@ -17,18 +17,40 @@ import BackDrop from "./components/layout/BackDrop";
 import Sticky from "./components/layout/Sticky";
 import Hero from "./components/layout/Hero";
 import SideNav from "./components/layout/SideNav";
+import { store } from "./store/store";
+import { Provider } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleCart, toggleNav } from "./store/commonSlice";
 
 const App = () => {
+  const loader = useSelector((state) => state.common.loader);
+  const showNav = useSelector((state) => state.common.showNav);
+  const showCart = useSelector((state) => state.common.showCart);
+  const showCover = useSelector((state) => state.common.showCover);
+  const cart = useSelector((state) => state.order.cart);
+  const dispatch = useDispatch();
+
   return (
     <section className="main">
       <BrowserRouter>
-        <SideNav />
-        <CartDrawer />
+        <SideNav
+          showNav={showNav}
+          toggle={() => dispatch(toggleNav(!showNav))}
+        />
+        <CartDrawer
+          showCart={showCart}
+          cart={cart}
+          toggle={() => dispatch(toggleCart(!showCart))}
+        />
         <div className="canvas">
           <BackDrop />
-          <Header />
-          <Sticky />
-          <Hero />
+          <Header cartItemsCount={cart.length} />
+          <Sticky
+            cartItemsCount={cart.length}
+            toggleCart={() => dispatch(toggleCart(true))}
+            toggleNav={() => dispatch(toggleNav(true))}
+          />
+          {showCover && <Hero />}
           <Routes>
             <Route path="/about" element={<About />} />
             <Route path="/cart" element={<Cart />} />
@@ -41,7 +63,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
           </Routes>
           <Footer />
-          <Loader />
+          {loader && <Loader />}
         </div>
       </BrowserRouter>
     </section>
@@ -50,4 +72,8 @@ const App = () => {
 
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);

@@ -4,7 +4,8 @@ const Sticky = ({
   logo = "assets/images/logo_text.png",
   height = "45",
   cartItemsCount,
-  onClick
+  toggleNav,
+  toggleCart
 }) => {
   return (
     <div className="header d-lg-none">
@@ -13,7 +14,7 @@ const Sticky = ({
           <div className="row">
             <div className="col d-flex justify-content-start align-items-center">
               <div className="header-links">
-                <button id="sidenav-open" onClick={() => onClick(true)}>
+                <button id="sidenav-open" onClick={toggleNav}>
                   <span>
                     <i className="fa fa-bars"></i>
                   </span>
@@ -31,7 +32,7 @@ const Sticky = ({
 
             <div className="col d-flex justify-content-end align-items-center">
               <div className="header-links">
-                <button id="shc-side-open" onClick={() => onClick(true)}>
+                <button id="shc-side-open" onClick={toggleCart}>
                   <span>
                     <i className="fa fa-shopping-cart"></i>
                   </span>
