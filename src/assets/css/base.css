@@ -1,9 +1,9 @@
 /* -----------------------------------------------------
 		Loader
    ----------------------------------------------------- */
-   
+
 .loader {
-	background: url(../images/loader-purple.gif) center no-repeat #fff;
+  background: url(../images/loader-purple.gif) center no-repeat #fff;
 }
 
 /* -----------------------------------------------------
@@ -52,14 +52,14 @@
 .user-prf-sidebar-links li a:hover,
 .user-prf-sidebar-links li.active a,
 .user-prf-sidebar-links li a .fa,
-.faq-heading:first-letter{
-	color:#ee4899;
+.faq-heading:first-letter {
+  color: #ee4899;
 }
 
 /* -----------------------------------------------------
 		Background Color
    ----------------------------------------------------- */
-   
+
 .page-heading:after,
 .btn-orange,
 .fullscr-navigation #fullscr-close,
@@ -92,14 +92,14 @@
 #user-profile-page .edit-link a span,
 .faq-heading::after,
 .faq-block .card .faq-title::after,
-.p-table-block .p-table-price h2{
-	background:#ee4899;
+.p-table-block .p-table-price h2 {
+  background: #ee4899;
 }
 
 /* -----------------------------------------------------
 		Border Color
    ----------------------------------------------------- */
-   
+
 .page-heading-line,
 #mySidenav #web-name,
 .fullscr-navigation li a,
@@ -116,37 +116,43 @@
 .order-card .card-header,
 .user-profile-heading hr,
 #coming-soon-page h2,
-.p-table-block{
-	border-color:#ee4899;
+.p-table-block {
+  border-color: #ee4899;
 }
 
 /* -----------------------------------------------------
 		RGBA
    ----------------------------------------------------- */
-   
-.overlay{
-	background:rgba(238, 72, 153,0.88);
+
+.overlay {
+  background: rgba(238, 72, 153, 0.88);
 }
 
-.footer-social{
-	background:linear-gradient( to left, rgba(238, 72, 153,0) 0%, rgba(238, 72, 153,0.3) 10%, rgba(238, 72, 153,0.88) 50%, rgba(238, 72, 153,0.3) 90%, rgba(238, 72, 153,0) 100%);
+.footer-social {
+  background: linear-gradient(
+    to left,
+    rgba(238, 72, 153, 0) 0%,
+    rgba(238, 72, 153, 0.3) 10%,
+    rgba(238, 72, 153, 0.88) 50%,
+    rgba(238, 72, 153, 0.3) 90%,
+    rgba(238, 72, 153, 0) 100%
+  );
 }
 
 a {
-	color: #373435;
+  color: #373435;
 }
 
 a:hover {
-    color: #E24585;
+  color: #e24585;
 }
 
-.custom-radio .custom-control-input:checked~.custom-control-label::before,
-.custom-control-input:active~.custom-control-label::before,
-.custom-control-input:checked~.custom-control-label::before {
-
-    background-color: #ef60a3;
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:active ~ .custom-control-label::before,
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #ef60a3;
 }
 
 .text-lilac {
-	color: #E24585 !important;
+  color: #e24585 !important;
 }

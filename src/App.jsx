@@ -1,5 +1,17 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { store } from "./store/store";
+import { toggleCart, toggleNav } from "./store/commonSlice";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+import CartDrawer from "./components/layout/CartDrawer";
+import Loader from "./components/layout/Loader";
+import BackDrop from "./components/layout/BackDrop";
+import Sticky from "./components/layout/Sticky";
+import Hero from "./components/layout/Hero";
+import SideNav from "./components/layout/SideNav";
 import About from "./pages/About";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
@@ -9,18 +21,6 @@ import Product from "./pages/Product";
 import Products from "./pages/Products";
 import Success from "./pages/Success";
 import Terms from "./pages/Terms";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
-import CartDrawer from "./components/layout/CartDrawer";
-import Loader from "./components/layout/Loader";
-import BackDrop from "./components/layout/BackDrop";
-import Sticky from "./components/layout/Sticky";
-import Hero from "./components/layout/Hero";
-import SideNav from "./components/layout/SideNav";
-import { store } from "./store/store";
-import { Provider } from "react-redux";
-import { useSelector, useDispatch } from "react-redux";
-import { toggleCart, toggleNav } from "./store/commonSlice";
 
 const App = () => {
   const loader = useSelector((state) => state.common.loader);

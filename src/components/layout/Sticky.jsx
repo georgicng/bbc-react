@@ -14,7 +14,7 @@ const Sticky = ({
           <div className="row">
             <div className="col d-flex justify-content-start align-items-center">
               <div className="header-links">
-                <button id="sidenav-open" onClick={toggleNav}>
+                <button id="sidenav-open" className="btn-link" onClick={toggleNav}>
                   <span>
                     <i className="fa fa-bars"></i>
                   </span>
@@ -32,7 +32,7 @@ const Sticky = ({
 
             <div className="col d-flex justify-content-end align-items-center">
               <div className="header-links">
-                <button id="shc-side-open" onClick={toggleCart}>
+                <button id="shc-side-open"className="btn-link" onClick={toggleCart}>
                   <span>
                     <i className="fa fa-shopping-cart"></i>
                   </span>

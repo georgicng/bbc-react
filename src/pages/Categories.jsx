@@ -27,7 +27,7 @@ const Categories = () => {
       <div id="categories-page">
         <div className="container" id="categories">
           <div className="row">
-            {categories.map((item) => (
+            {categories?.map((item) => (
               <div key={item.id} className="col-md-6 col-lg-4 col-xl-3 my-3">
                 <Link to={getLink(item)}>
                   <div className="card">
