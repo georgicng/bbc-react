@@ -1,9 +1,9 @@
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Provider, useSelector, useDispatch } from "react-redux";
 import { store } from "./store/store";
-import { toggleCart, toggleNav } from "./store/commonSlice";
+import { toggleCart, toggleNav, setPageMeta } from "./store/commonSlice";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CartDrawer from "./components/layout/CartDrawer";
@@ -26,46 +26,45 @@ const App = () => {
   const loader = useSelector((state) => state.common.loader);
   const showNav = useSelector((state) => state.common.showNav);
   const showCart = useSelector((state) => state.common.showCart);
-  const showCover = useSelector((state) => state.common.showCover);
+  const pageMeta = useSelector((state) => state.common.pageMeta);
   const cart = useSelector((state) => state.order.cart);
   const dispatch = useDispatch();
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(setPageMeta(location.pathname));
+  }, [location]);
 
   return (
     <section className="main">
-      <BrowserRouter>
-        <SideNav
-          showNav={showNav}
-          toggle={() => dispatch(toggleNav(!showNav))}
+      <SideNav showNav={showNav} toggle={() => dispatch(toggleNav(!showNav))} />
+      <CartDrawer
+        showCart={showCart}
+        cart={cart}
+        toggle={() => dispatch(toggleCart(!showCart))}
+      />
+      <div className="canvas">
+        <BackDrop />
+        <Header cartItemsCount={cart.length} />
+        <Sticky
+          cartItemsCount={cart.length}
+          toggleCart={() => dispatch(toggleCart(true))}
+          toggleNav={() => dispatch(toggleNav(true))}
         />
-        <CartDrawer
-          showCart={showCart}
-          cart={cart}
-          toggle={() => dispatch(toggleCart(!showCart))}
-        />
-        <div className="canvas">
-          <BackDrop />
-          <Header cartItemsCount={cart.length} />
-          <Sticky
-            cartItemsCount={cart.length}
-            toggleCart={() => dispatch(toggleCart(true))}
-            toggleNav={() => dispatch(toggleNav(true))}
-          />
-          {showCover && <Hero />}
-          <Routes>
-            <Route path="/about" element={<About />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/faq" element={<Faq />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/success" element={<Success />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/" element={<Home />} />
-          </Routes>
-          <Footer />
-          {loader && <Loader />}
-        </div>
-      </BrowserRouter>
+        {pageMeta?.cover && <Hero pageMeta={pageMeta} />}
+        <Routes>
+          <Route path="/about" element={<About />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+        <Footer />
+        {loader && <Loader />}
+      </div>
     </section>
   );
 };
@@ -74,6 +73,8 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
 );

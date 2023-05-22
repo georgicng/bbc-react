@@ -1,8 +1,3 @@
-import Tabs from "../components/Tabs";
-import ProductGallery from "../components/ProductGallery";
-import ProductOptions from "../components/ProductOptions";
-import Title from "../components/Title";
-import ErrorBanner from "../components/ErrorBanner";
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../services/products";
 import { useEffect, useState } from "react";
@@ -11,6 +6,11 @@ import { showLoader } from "../store/commonSlice";
 import { add } from "../store/orderSlice";
 import { OPTION_VALUE_MAP, OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
 import { getOptions, getOptionIncrement } from "../utils";
+import Tabs from "../components/Tabs";
+import ProductGallery from "../components/ProductGallery";
+import ProductOptions from "../components/ProductOptions";
+import Title from "../components/Title";
+import ErrorBanner from "../components/ErrorBanner";
 
 const Product = () => {
   //TODO: validation, imer

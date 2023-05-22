@@ -1,4 +1,5 @@
 import { TERMS } from "../config";
+import Heading from "../components/Heading";
 
 const TITLE = "Terms and Conditions";
 const SUBTITLE =
@@ -9,14 +10,11 @@ const Terms = ({ title = TITLE, subtitle = SUBTITLE, terms = TERMS }) => {
     <section className="page-wrapper innerpage-section-padding">
       <div id="tos-page">
         <div className="container-fluid">
-          <div className="innerpage-heading  text-center">
-            <h3>{title}</h3>
-            <hr className="page-heading-line" />
-          </div>
+          <Heading title={title} subtitle={subtitle} />
+
           <div className="no-back">
             <div className="row">
               <div className="col-sm-12 offset-lg-2 col-lg-8">
-                <p>{subtitle}</p>
                 <ul className="term-list">
                   {Object.entries(terms).map(([key, value]) => (
                     <li key={key}>{value}</li>

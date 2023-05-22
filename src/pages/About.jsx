@@ -1,15 +1,10 @@
-import Heading from "../components/Heading";
 import { ABOUT_US } from "../config";
+import Heading from "../components/Heading";
 
-const TITLE = "Terms and Conditions";
-const SUBTITLE =
-  "Thanks for your interest in butterbakes cakes. Before you proceed with your order we would like you to be familiar with a our processes and mode of operations.";
+const TITLE = "About Us";
+const SUBTITLE = "Welcome to the world of beautiful buttercream cakes";
 
-const About = ({
-  title = TITLE,
-  subtitle = SUBTITLE,
-  content = ABOUT_US,
-}) => {
+const About = ({ title = TITLE, subtitle = SUBTITLE, content = ABOUT_US }) => {
   return (
     <section className="page-wrapper innerpage-section-padding">
       <div id="contact-page">

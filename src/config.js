@@ -149,21 +149,23 @@ export const MENU = [
       { key: "custom", path: "/custom", name: "Quick Order Cakes" },
     ],
   },
-  { key: "about", path: "/about", name: "About", icon: "fas fa-users" },
+  { key: "about", path: "/about", name: "About", icon: "fas fa-users", cover: true },
   {
     key: "contact",
     path: "/contact",
     name: "Contact",
     icon: "fas fa-envelope",
+    cover: true
   },
   {
     key: "complaint",
     path: "/complaint",
     name: "Support",
     icon: "fa fa-life-ring",
+    cover: true
   },
-  { key: "faq", path: "/faq", name: "FAQ", icon: "fas fa-question-circle" },
-  { key: "terms", path: "/terms", name: "Terms", icon: "far fa-handshake" },
+  { key: "faq", path: "/faq", name: "FAQ", icon: "fas fa-question-circle", cover: true },
+  { key: "terms", path: "/terms", name: "Terms", icon: "far fa-handshake", cover: true },
 ];
 
 export const TERMS = {
