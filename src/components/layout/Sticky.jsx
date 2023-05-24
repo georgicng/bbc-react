@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Sticky = ({
-  logo = "assets/images/logo_text.png",
+  logo = "/assets/images/logo_text.png",
   height = "45",
   cartItemsCount,
   toggleNav,

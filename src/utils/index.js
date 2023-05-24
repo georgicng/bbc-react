@@ -15,8 +15,11 @@ export const getLink = (category) => {
   return `/products?category=${category.id}`;
 };
 
-export const getOptions = (product, OPTION_TYPE_MAP) =>
-  product.options.data.map((input) => ({
+export const getOptions = (product, OPTION_TYPE_MAP) => {
+  if (!product) {
+    return [];
+  }
+  return product.options.data.map((input) => ({
     id: input.option_id.data.id,
     name: input.option_id.data.slug,
     label: input.option_id.data.name,
@@ -25,7 +28,9 @@ export const getOptions = (product, OPTION_TYPE_MAP) =>
     minimum: input.minimum,
     increment: input.price_increment,
     type: input.option_id.data.type,
-    ...(input.option_id.data.type === OPTION_TYPE_MAP.CHECKBOX
+    ...([OPTION_TYPE_MAP.SELECT, OPTION_TYPE_MAP.CHECKBOX].includes(
+      input.option_id.data.type
+    )
       ? {
           options: input.option_values.data.map((value) => ({
             id: value.option_value.data.id,
@@ -36,9 +41,13 @@ export const getOptions = (product, OPTION_TYPE_MAP) =>
         }
       : {}),
   }));
+};
 
-export const getOptionIncrementMap = (product) =>
-  product.options.data.reduce(
+export const getOptionIncrementMap = (product, OPTION_TYPE_MAP) => {
+  if (!product) {
+    return {};
+  }
+  return product.options.data.reduce(
     (acc, input) => ({
       ...acc,
       [input.option_id.data.slug]: input.price_increment,
@@ -54,12 +63,13 @@ export const getOptionIncrementMap = (product) =>
     }),
     {}
   );
+};
 
 export const getOptionIncrement = (
   option,
   value,
   options,
-  OPTION_VALUE_MAP
+  OPTION_KEY_MAP
 ) => {
   const candidate = options.find((item) => item.name === option);
 
@@ -67,19 +77,23 @@ export const getOptionIncrement = (
     return 0;
   }
 
-  if (!Array.isArray(value)) {
-    return parseFloat(candidate.increment);
+  if (!Array.isArray(value) && option !== OPTION_KEY_MAP.SIZE) {
+    return parseFloat(candidate.increment || 0);
+  }
+
+  if (option === OPTION_KEY_MAP.SIZE) {
+    const optionItem = candidate.options.find((item) => value === item.id);
+    return parseFloat(optionItem.increment || 0)
   }
 
   let sum = candidate.options
     .filter((item) => value.includes(item.value))
     .reduce((acc, item) => {
-      return (acc += parseFloat(item.increment));
+      return (acc += parseFloat(item.increment || 0));
     }, 0);
 
-  if (option === OPTION_VALUE_MAP.FLAVOUR && value?.length > 2) {
+  if (option === OPTION_KEY_MAP.FLAVOURS && value.length > 2) {
     sum += 1000;
   }
-
   return sum;
 };

@@ -8,7 +8,7 @@ const Hero = ({ pageMeta}) => {
           </span>
           {pageMeta.name}
           <span className="d-none cover-right-icon float-right">
-            <i className={pageMeta.icon}></i>
+            <i className={`${pageMeta.icon}`}></i>
           </span>
         </h3>
       </div>

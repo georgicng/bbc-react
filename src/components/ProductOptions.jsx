@@ -1,5 +1,5 @@
 import { OPTION_TYPE_MAP } from "../config";
-import Multiselect from 'multiselect-react-dropdown';
+import Multiselect from "multiselect-react-dropdown";
 
 const ProductOptions = ({ options, model, onChange }) => {
   return (
@@ -30,10 +30,12 @@ const ProductOptions = ({ options, model, onChange }) => {
                 {option.name}
               </label>
               <Multiselect
+                displayValue="label"
                 selectedValues={model[option.name]}
                 options={option.options}
+                isObject={true}
                 singleSelect={true}
-                onSelect={(e) => onChange(option.name, e.target.value)}
+                onSelect={(selection) => onChange(option.name, selection)}
               ></Multiselect>
             </div>
           )}
@@ -67,10 +69,13 @@ const ProductOptions = ({ options, model, onChange }) => {
                 {option.name}
               </label>
               <Multiselect
+                displayValue="label"
                 selectedValues={model[option.name]}
                 options={option.options}
+                isObject={true}
                 showCheckbox={true}
-                onSelect={(e) => onChange(option.name, e.target.value)}
+                onSelect={(selection) => onChange(option.name, selection)}
+                onRemove={(selection) => onChange(option.name, selection)}
               />
             </div>
           )}

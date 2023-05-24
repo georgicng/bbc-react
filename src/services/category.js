@@ -6,7 +6,7 @@ export const categoryService = apiService.injectEndpoints({
     getCategories: build.query({
       query: () => ({
         url: `${API_ENDPOINT_PREFIX}/categories/${API_ENDPOINT_SUFFIX}`,
-        query: { depth: 1 },
+        params: { depth: 1 },
       }),
       transformResponse: (response) => response.data,
     }),

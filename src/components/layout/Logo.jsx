@@ -1,4 +1,4 @@
-const Logo = ({ logo = "assets/images/logo.png", height = "100" }) => {
+const Logo = ({ logo = "/assets/images/logo.png", height = "100" }) => {
   return (
     <div className="logo-area">
       <div className="container">

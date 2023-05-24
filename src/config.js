@@ -8,12 +8,11 @@ export const PAGE_SIZE = 20;
 export const DEPTH_SIZE = 3;
 export const CUSTOM_PRODUCT_ID = 12;
 
-export const OPTION_VALUE_MAP = Object.freeze({
-  FLAVOUR: "flavour",
-});
-
 export const OPTION_KEY_MAP = Object.freeze({
   QUANTITY: "quantity",
+  SIZE: "size",
+  FLAVOURS: "flavours",
+  COLORS: "colors",
 });
 
 export const OPTION_TYPE_MAP = Object.freeze({
@@ -28,22 +27,22 @@ export const SIZES = [
   {
     id: "inches-6",
     label: "6 Inches",
-    image: "assets/images/examples/6-inches.jpg",
+    image: "/assets/images/examples/6-inches.jpg",
   },
   {
     id: "inches-8",
     label: "8 Inches",
-    image: "assets/images/examples/8-inches.jpg",
+    image: "/assets/images/examples/8-inches.jpg",
   },
   {
     id: "inches-10",
     label: "10 Inches",
-    image: "assets/images/examples/10-inches.jpg",
+    image: "/assets/images/examples/10-inches.jpg",
   },
   {
     id: "inches-12",
     label: "12 Inches",
-    image: "assets/images/examples/12-inches.jpg",
+    image: "/assets/images/examples/12-inches.jpg",
   },
 ];
 
@@ -52,25 +51,25 @@ export const BLOCKS = [
     key: "category",
     path: "/categories",
     title: "Order a Cake",
-    image: "assets/images/banners/cake.jpg",
+    image: "/assets/images/banners/cake.jpg",
   },
   {
     key: "term",
     path: "/terms",
     title: "Terms and Conditions",
-    image: "assets/images/banners/terms.jpg",
+    image: "/assets/images/banners/terms.jpg",
   },
   {
     key: "complain",
     path: "/complaint",
     title: "Lodge a Complaint",
-    image: "assets/images/banners/complaint.jpg",
+    image: "/assets/images/banners/complaint.jpg",
   },
   {
     key: "contact",
     path: "/contact",
     title: "Contact Us",
-    image: "assets/images/banners/contact.jpg",
+    image: "/assets/images/banners/contact.jpg",
   },
 ];
 
@@ -149,23 +148,41 @@ export const MENU = [
       { key: "custom", path: "/custom", name: "Quick Order Cakes" },
     ],
   },
-  { key: "about", path: "/about", name: "About", icon: "fas fa-users", cover: true },
+  {
+    key: "about",
+    path: "/about",
+    name: "About",
+    icon: "fas fa-users",
+    cover: true,
+  },
   {
     key: "contact",
     path: "/contact",
     name: "Contact",
     icon: "fas fa-envelope",
-    cover: true
+    cover: true,
   },
   {
     key: "complaint",
     path: "/complaint",
     name: "Support",
     icon: "fa fa-life-ring",
-    cover: true
+    cover: true,
   },
-  { key: "faq", path: "/faq", name: "FAQ", icon: "fas fa-question-circle", cover: true },
-  { key: "terms", path: "/terms", name: "Terms", icon: "far fa-handshake", cover: true },
+  {
+    key: "faq",
+    path: "/faq",
+    name: "FAQ",
+    icon: "fas fa-question-circle",
+    cover: true,
+  },
+  {
+    key: "terms",
+    path: "/terms",
+    name: "Terms",
+    icon: "far fa-handshake",
+    cover: true,
+  },
 ];
 
 export const TERMS = {

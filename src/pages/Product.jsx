@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../services/products";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { showLoader } from "../store/commonSlice";
 import { add } from "../store/orderSlice";
-import { OPTION_VALUE_MAP, OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
+import { OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
 import { getOptions, getOptionIncrement } from "../utils";
 import Tabs from "../components/Tabs";
 import ProductGallery from "../components/ProductGallery";
@@ -12,40 +12,48 @@ import ProductOptions from "../components/ProductOptions";
 import Title from "../components/Title";
 import ErrorBanner from "../components/ErrorBanner";
 
+const transform = (model) =>
+  Object.keys(model).reduce((acc, key) => {
+    const value = model[key];
+    let altValue;
+
+    if (Array.isArray(value)) {
+      if (key === OPTION_KEY_MAP.SIZE) {
+        altValue = value[0].id;
+      } else {
+        altValue = value.map((item) => item.id);
+      }
+    }
+
+    return { ...acc, [key]: altValue ? altValue : value };
+  }, {});
+
 const Product = () => {
   //TODO: validation, imer
   const { id } = useParams();
   const dispatch = useDispatch();
-  const {
-    data: product,
-    isLoading,
-    error,
-    refetch,
-  } = useGetProductQuery({ id });
+  const { data: product, isLoading, error, refetch } = useGetProductQuery(id);
 
-  const options = getOptions(product, OPTION_TYPE_MAP);
-  const normalPrice = parseFloat(product.price);
+  const [options, setOptions] = useState([]);
+  const [normalPrice, setNormalPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [valid, setValid] = useState(1);
   const [errorBag, setErrorBag] = useState(1);
-  const [price, setPrice] = useState(normalPrice);
-  const [model, setModel] = useState(
-    options.reduce(
-      (acc, option) => ({ ...acc, [option.name]: option.options ? [] : "" }),
-      {}
-    )
-  );
+  const [price, setPrice] = useState(0);
+  const [model, setModel] = useState({});
   const multi = false;
 
-  const calculateTotalIncrement = (model) =>
-    Object.keys(model).reduce((acc, key) => {
-      return (acc += getOptionIncrement(
+  const calculateTotalIncrement = (model) => {
+    return Object.keys(model).reduce((acc, key) => {
+      const increment = getOptionIncrement(
         key,
         model[key],
         options,
-        OPTION_VALUE_MAP
-      ));
+        OPTION_KEY_MAP
+      );
+      return (acc += increment);
     }, 0);
+  };
 
   const validate = () => {
     //TODO: polpulate error bag
@@ -74,29 +82,64 @@ const Product = () => {
   };
 
   const handleChange = (key, value) => {
+    let newModel = null;
+
     if (key === OPTION_KEY_MAP.QUANTITY) {
       setQuantity(value);
     } else {
-      setModel({
+      newModel = {
         ...model,
-        // NOTE: for multiple option items, send collection and not individual items to avoid need for mutaion
         [key]: value,
-      });
+      };
     }
-    setPrice((calculateTotalIncrement() + normalPrice) * quantity);
+
+    if (newModel) {
+      setModel(() => newModel);
+    }
+    setPrice(
+      () =>
+        (calculateTotalIncrement(transform(newModel ? newModel : model)) +
+          normalPrice) *
+        quantity
+    );
     validate();
   };
 
   const addToCart = () => {
-    dispatch(add({ line: product, options: model, quantity, price }));
+    dispatch(
+      add({ line: product, options: transform(model), quantity, price })
+    );
   };
 
   useEffect(() => {
     dispatch(showLoader(isLoading));
   }, [isLoading]);
 
+  useEffect(() => {
+    if (!product) {
+      return;
+    }
+    const optionList = getOptions(product, OPTION_TYPE_MAP);
+    setOptions(() => optionList);
+    setModel(() =>
+      optionList.reduce(
+        (acc, option) => ({
+          ...acc,
+          [option.name]: option.type === OPTION_TYPE_MAP.CHECKBOX ? [] : "",
+        }),
+        {}
+      )
+    );
+    setNormalPrice(() => parseFloat(product.price));
+    setPrice(() => parseFloat(product.price));
+  }, [product]);
+
   if (error) {
     return <ErrorBanner error={error} refetch={refetch} />;
+  }
+
+  if (!product) {
+    return <>Empty</>;
   }
 
   return (
