@@ -1,7 +1,7 @@
 import { OPTION_TYPE_MAP } from "../config";
 import Multiselect from "multiselect-react-dropdown";
 
-const ProductOptions = ({ options, model, onChange }) => {
+const ProductOptions = ({ options, model, errors, showError, onChange }) => {
   return (
     <div id="productform">
       {options.map((option) => (
@@ -92,6 +92,10 @@ const ProductOptions = ({ options, model, onChange }) => {
                 onChange={(e) => onChange(option.name, e.target.value)}
               ></textarea>
             </div>
+          )}
+
+          {showError && errors[option.name] && (
+            <div className="error d-flex">{errors[option.name][0]}</div>
           )}
         </div>
       ))}

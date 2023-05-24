@@ -41,6 +41,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [valid, setValid] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [pristine, setPristine] = useState(true);
   const [errorBag, setErrorBag] = useState({});
   const [price, setPrice] = useState(0);
   const [model, setModel] = useState({});
@@ -82,16 +83,34 @@ const Product = () => {
           ) &&
           !model[option.name].length
         ) {
-          _errorBag[option.name] = `${option.name} cannot be empty`;
+          _errorBag[option.name] = [`${option.name} cannot be empty`];
         } else if (!model[option.name]) {
-          _errorBag[option.name] = `${option.name} is required`;
+          _errorBag[option.name] = [`${option.name} is required`];
+        }
+      }
+
+      if (option.maximum) {
+        if (model[option.name]?.length > option.maximum) {
+          _errorBag[option.name] = [
+            ...(_errorBag[option.name] ? _errorBag[option.name] : []),
+            `${option.name} exceeds ${option.maximum}`,
+          ];
+        }
+      }
+
+      if (option.minimum) {
+        if (model[option.name]?.length < option.minimum) {
+          _errorBag[option.name] = [
+            ...(_errorBag[option.name] ? _errorBag[option.name] : []),
+            `${option.name} is lesser than ${option.minimum}`,
+          ];
         }
       }
     });
     if (multi && !quantity) {
       _errorBag["quantity"] = `Please specify the quantity`;
     }
-    console.log({ options, _errorBag, model})
+    console.log({ options, _errorBag, model });
     setValid(() => !Object.keys(_errorBag).length);
     setErrorBag(() => _errorBag);
   };
@@ -130,11 +149,13 @@ const Product = () => {
         quantity
     );
     validate(newModel ? newModel : model);
+    pristine && setPristine(() => false);
   };
 
   const navigate = useNavigate();
   const addToCart = () => {
     if (!valid) {
+      pristine && validate(model);
       setShowError(() => true);
       return;
     }
@@ -173,25 +194,32 @@ const Product = () => {
                   <ProductOptions
                     options={options}
                     model={model}
+                    errors={errorBag}
+                    showError={showError}
                     onChange={handleChange}
                   />
                   {multi && (
                     <div className="form-group">
-                      <label htmlFor="quantity" className="font-weight-bold">
-                        Quantity :
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="quantity"
-                        name="quantity"
-                        min="1"
-                        max="100"
-                        value={quantity}
-                        onChange={(e) =>
-                          handleChange("quantity", e.target.value)
-                        }
-                      />
+                      <div>
+                        <label htmlFor="quantity" className="font-weight-bold">
+                          Quantity :
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="quantity"
+                          name="quantity"
+                          min="1"
+                          max="100"
+                          value={quantity}
+                          onChange={(e) =>
+                            handleChange("quantity", e.target.value)
+                          }
+                        />
+                      </div>
+                      {showError && errorBag[OPTION_KEY_MAP.QUANTITY] && (
+                        <div className="error d-flex">{errorBag[OPTION_KEY_MAP.QUANTITY][0]}</div>
+                      )}
                     </div>
                   )}
 
@@ -199,13 +227,6 @@ const Product = () => {
                     <span className="font-weight-bold">Total :</span>
                     <span className="price">N{price}</span>
                   </div>
-                  {showError && !valid && (
-                    <div className="error d-flex flex-column">
-                      {Object.entries(errorBag).map(([key, message]) => (
-                        <span key={key}>{message}</span>
-                      ))}
-                    </div>
-                  )}
                   <button onClick={addToCart} className="btn btn-orange">
                     Add to cart
                     <span>
