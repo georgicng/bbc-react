@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
+const LINK_MAP = {
+  cart: "View Cart",
+  product: "Continue Shopping",
+};
 
 const CartTotals = ({ link, subtotal, discount, total }) => {
-  const LINK_MAP = {
-    cart: "View Cart",
-    product: "Continue Shopping",
-  };
   return (
     <div className="cart-info text-right">
       <h4>

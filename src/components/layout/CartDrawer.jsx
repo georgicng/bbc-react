@@ -1,7 +1,7 @@
 import CartItems from "../CartItems";
 import CartTotals from "../CartTotals";
 
-const CartDrawer = ({ showCart, cart, toggle }) => {
+const CartDrawer = ({ showCart, cart, total, subtotal, toggle }) => {
   return (
     <div
       id="shopping-cart-sidebar"
@@ -17,7 +17,7 @@ const CartDrawer = ({ showCart, cart, toggle }) => {
         </button>
       </div>
       <CartItems cart={cart} />
-      <CartTotals link="cart" />
+      <CartTotals link="cart" subtotal={subtotal} total={total} />
     </div>
   );
 };

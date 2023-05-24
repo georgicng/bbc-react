@@ -190,8 +190,73 @@ figure {
      ----------------------------------------------------- */
 
      /* -----------------------------------------------------
-      Categories
+      Product Details
      ----------------------------------------------------- */
+     .product-details {
+      border-bottom: 2px solid #f5f5f5;
+      padding: 30px 0;
+    }
+    .product-details__image {
+    }
+    .product-details__description {
+      padding-top: 30px;
+    }
+    .product-details__description small {
+      color: #808080;
+    }
+    .product-details__description h3 {
+      margin: 5px 0 30px 0;
+    }
+    .product-details__price-cart {
+      display: flex;
+      padding-top: 30px;
+    }
+    .product-details__price-cart p {
+      flex-grow: 2;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .price {
+      color: red;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    #menu-gallery li img {
+      max-height: 450px;
+    }
+    .no-back .nav-tabs li {
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+    .no-back .nav-tabs li a {
+      border: 0px;
+      color: #212121;
+      padding: 11px 15px;
+    }
+    .no-back .nav-tabs li a.active {
+      border-bottom: 3px solid transparent;
+    }
+    .no-back .nav-tabs li a.active {
+      border-color: #ee4899;
+      color: #ee4899;
+    }
+    .error {
+      color: red;
+      background: #f1ecee;
+      padding: 10px;
+    }
+    .multiselect__tag {
+      background: #ee4899;
+    }
+    .multiselect__option--highlight, .multiselect__option--highlight::after {
+      background: #ee4899;
+    }
+    .multiselect__tag-icon:after {
+      color: #000;
+    }
 
      /* -----------------------------------------------------
       Categories

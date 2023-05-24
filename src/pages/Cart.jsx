@@ -1,21 +1,20 @@
+import { remove, update } from "../store/orderSlice";
+import useCart from "../hooks/useCart";
+import { useDispatch } from "react-redux";
+import Heading from "../components/Heading";
 import { Link } from "react-router-dom";
 import CartItems from "../components/CartItems";
 import Coupon from "../components/Coupon";
 import CartTotals from "../components/CartTotals";
-import { remove, update } from "../store/orderSlice";
-import { useSelector, useDispatch } from "react-redux";
-import Heading from "../components/Heading";
 
 const Cart = ({ title = "Your Cart" }) => {
   //TODO: import cartslice and map to variables
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.order.cart);
-  const count = 0;
-  const discount = 0;
+  const {cart, discount, subtotal, total } = useCart();
 
   const handleChange = (key, value) => {
     console.log({ key, value });
-    dispatch(update());
+    //dispatch(update());
   };
 
   return (
@@ -26,14 +25,14 @@ const Cart = ({ title = "Your Cart" }) => {
           <div className="no-back">
             <div className="row">
               <div className="col-sm-12 offset-lg-2 col-lg-8">
-                {count && (
+                {cart.length && (
                   <>
                     <CartItems cart={cart} onChange={handleChange} />
                     {discount <= 0 && <Coupon onClick={handleChange} />}
-                    <CartTotals link="products" />
+                    <CartTotals link="products" subtotal={subtotal} total={total} discount={discount} />
                   </>
                 )}
-                {!count && (
+                {!cart.length && (
                   <>
                     <h1>
                       <i className="fab fa-superpowers"></i> Your Cart is Empty

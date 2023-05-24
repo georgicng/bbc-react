@@ -31,7 +31,7 @@ const CartItem = ({ line, price, quantity, options, onChange }) => {
         </figure>
       </div>
 
-      <div className="d-flex flex-wrap">
+      <div className="d-flex flex-column flex-wrap">
         <LineOptions options={options} />
       </div>
       <div className="total">

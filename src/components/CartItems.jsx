@@ -1,10 +1,10 @@
 import CartItem from "./CartItem";
 
-const CartItems = ({ cart = [], onChange }) => {
+const CartItems = ({ cart, onChange }) => {
   return (
     <ul className="list-unstyled cart-list">
       {cart.map((item) => (
-        <li key="index">
+        <li key={item.line.id}>
           <CartItem {...item} onChange={onChange} />
         </li>
       ))}

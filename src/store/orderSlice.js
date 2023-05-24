@@ -3,39 +3,42 @@ import { createSlice } from "@reduxjs/toolkit";
 export const orderSlice = createSlice({
   name: "order",
   initialState: {
-     cart: [], shipping: 0, payment: 0, express: false, coupon: false,
+     cart: [], shipping: 0, payment: 0, express: false, coupon: false, discount: 0, shippingFee: 0
   },
   reducers: {
-    add: (state, action) => {
-      state.cart.push(action);
+    add: (state, { payload }) => {
+      state.cart.push(payload);
     },
-    remove: (state, action) => {
+    remove: (state, { payload }) => {
       //action is cart index
-      state.cart.splice(action, 1);
+      state.cart.splice(payload, 1);
     },
-    update: (state, payload) => {
-      state.cart[payload.index].quantity = payload.quantity;
+    update: (state, {payload: {_index, quantity}}) => {
+      state.cart[_index].quantity = quantity;
     },
     clear: (state) => {
       state.cart = [];
     },
-    addShippingAddress: (state, payload) => {
+    addShippingAddress: (state, {payload}) => {
       state.address = payload;
     },
-    addShippingMethod: (state, payload) => {
+    addShippingMethod: (state, {payload}) => {
       state.shipping =  payload.id;
     },
-    addPaymentmethod: (state, payload) => {
+    addPaymentmethod: (state, {payload}) => {
       state.payment = payload;
     },
-    addExpressShipping: (state, payload) => {
+    addExpressShipping: (state, {payload}) => {
       state.express = payload;
     },
-    addDeliveryDate: (state, payload) => {
-      state.delivery_date = payload;
+    addDeliveryDate: (state, {payload}) => {
+      state.deliveryDate = payload;
     },
-    addDeliveryTime: (state, payload) => {
-      state.delivery_time =  payload;
+    addDeliveryTime: (state, {payload}) => {
+      state.deliveryTime =  payload;
+    },
+    setDiscount: (state, {payload}) => {
+      state.discount =  payload;
     },
   },
 });

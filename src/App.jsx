@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import { store } from "./store/store";
 import { toggleCart, toggleNav, setPageMeta } from "./store/commonSlice";
+import useCart from "./hooks/useCart";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CartDrawer from "./components/layout/CartDrawer";
@@ -27,7 +28,7 @@ const App = () => {
   const showNav = useSelector((state) => state.common.showNav);
   const showCart = useSelector((state) => state.common.showCart);
   const pageMeta = useSelector((state) => state.common.pageMeta);
-  const cart = useSelector((state) => state.order.cart);
+  const {cart, subtotal, total } = useCart();
   const dispatch = useDispatch();
   const location = useLocation();
   useEffect(() => {
@@ -40,6 +41,8 @@ const App = () => {
       <CartDrawer
         showCart={showCart}
         cart={cart}
+        subtotal={subtotal}
+        total={total}
         toggle={() => dispatch(toggleCart(!showCart))}
       />
       <div className="canvas">
