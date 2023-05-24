@@ -10,7 +10,7 @@ import CartTotals from "../components/CartTotals";
 const Cart = ({ title = "Your Cart" }) => {
   //TODO: import cartslice and map to variables
   const dispatch = useDispatch();
-  const {cart, discount, subtotal, total } = useCart();
+  const { cart, discount, subtotal, total } = useCart();
 
   const handleChange = (key, value) => {
     console.log({ key, value });
@@ -25,22 +25,17 @@ const Cart = ({ title = "Your Cart" }) => {
           <div className="no-back">
             <div className="row">
               <div className="col-sm-12 offset-lg-2 col-lg-8">
-                {cart.length && (
-                  <>
-                    <CartItems cart={cart} onChange={handleChange} />
-                    {discount <= 0 && <Coupon onClick={handleChange} />}
-                    <CartTotals link="products" subtotal={subtotal} total={total} discount={discount} />
-                  </>
+                <CartItems cart={cart} onChange={handleChange} />
+                {cart.length && discount <= 0 && (
+                  <Coupon onClick={handleChange} />
                 )}
-                {!cart.length && (
-                  <>
-                    <h1>
-                      <i className="fab fa-superpowers"></i> Your Cart is Empty
-                    </h1>
-                    <Link to="/products" className="btn btn-orange">
-                      <i className="fa fa-home"></i> Go Shopping
-                    </Link>
-                  </>
+                {cart.length && (
+                  <CartTotals
+                    link="products"
+                    subtotal={subtotal}
+                    total={total}
+                    discount={discount}
+                  />
                 )}
               </div>
             </div>

@@ -17,11 +17,13 @@ const Products = () => {
     error,
     refetch,
   } = useGetProductsQuery({ category: searchParams.get("category") });
-  const { data: categories } = useGetCategoriesQuery(null);  
+  
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(showLoader(isLoading));
   }, [isLoading]);
+
+  const { data: categories } = useGetCategoriesQuery(null);  
 
   const title =
     categories?.find((cat) => cat.id == searchParams.get("category"))?.name ||

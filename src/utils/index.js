@@ -51,10 +51,13 @@ export const getOptionIncrementMap = (product, OPTION_TYPE_MAP) => {
     (acc, input) => ({
       ...acc,
       [input.option_id.data.slug]: input.price_increment,
-      ...(input.option_id.data.type === OPTION_TYPE_MAP.CHECKBOX
+      ...([OPTION_TYPE_MAP.CHECKBOX, OPTION_TYPE_MAP.SELECT].includes(
+        input.option_id.data.type
+      )
         ? input.option_values.data.reduce(
             (_acc, value) => ({
-              [`${input.option_id.data.slug}.${value.option_value.data.value}`]:
+              ..._acc,
+              [`${input.option_id.data.slug}.${value.option_value.data.id}`]:
                 value.price_increment,
             }),
             {}
@@ -68,29 +71,20 @@ export const getOptionIncrementMap = (product, OPTION_TYPE_MAP) => {
 export const getOptionIncrement = (
   option,
   value,
-  options,
+  OPTION_INCREMENT_MAP,
   OPTION_KEY_MAP
 ) => {
-  const candidate = options.find((item) => item.name === option);
-
-  if (!candidate) {
-    return 0;
-  }
-
   if (!Array.isArray(value) && option !== OPTION_KEY_MAP.SIZE) {
-    return parseFloat(candidate.increment || 0);
+    return parseFloat(OPTION_INCREMENT_MAP[option] || 0);
   }
 
   if (option === OPTION_KEY_MAP.SIZE) {
-    const optionItem = candidate.options.find((item) => value === item.id);
-    return parseFloat(optionItem.increment || 0)
+    return parseFloat(OPTION_INCREMENT_MAP[`${option}.${value}`] || 0);
   }
 
-  let sum = candidate.options
-    .filter((item) => value.includes(item.value))
-    .reduce((acc, item) => {
-      return (acc += parseFloat(item.increment || 0));
-    }, 0);
+  let sum = value.reduce((acc, item) => {
+    return (acc += parseFloat(OPTION_INCREMENT_MAP[`${option}.${item}`] || 0));
+  }, 0);
 
   if (option === OPTION_KEY_MAP.FLAVOURS && value.length > 2) {
     sum += 1000;

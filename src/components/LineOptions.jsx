@@ -3,7 +3,7 @@ const LineOptions = ({ options }) => {
     <>
       {Object.entries(options).map(([key, value]) => (
         <div key={key} className="tag d-flex">
-          <div>{key}:{" "}</div>
+          <div>{key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()}:{" "}</div>
           {Array.isArray(value) ? (
             <div className="tag-group d-flex">
               {value.map((item) => (

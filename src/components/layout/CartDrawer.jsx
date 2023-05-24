@@ -17,7 +17,9 @@ const CartDrawer = ({ showCart, cart, total, subtotal, toggle }) => {
         </button>
       </div>
       <CartItems cart={cart} />
-      <CartTotals link="cart" subtotal={subtotal} total={total} />
+      {cart.length && (
+        <CartTotals link="cart" subtotal={subtotal} total={total} />
+      )}
     </div>
   );
 };
