@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../services/products";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { showLoader } from "../store/commonSlice";
 import { add } from "../store/orderSlice";
 import { OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
@@ -41,6 +42,7 @@ const Product = () => {
   const [errorBag, setErrorBag] = useState(1);
   const [price, setPrice] = useState(0);
   const [model, setModel] = useState({});
+  const navigate = useNavigate();
   const multi = false;
 
   const calculateTotalIncrement = (model) => {
@@ -109,6 +111,7 @@ const Product = () => {
     dispatch(
       add({ line: product, options: transform(model), quantity, price })
     );
+    navigate('/cart')
   };
 
   useEffect(() => {
