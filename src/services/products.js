@@ -15,7 +15,7 @@ export const productService = apiService.injectEndpoints({
       query: (payload) => {
         const { page = 1, category = 0 } = payload;
         const offset = (page - 1) * limit;
-        const query = {
+        const params = {
           depth,
           limit,
           offset,
@@ -25,7 +25,7 @@ export const productService = apiService.injectEndpoints({
         };
         return {
           url: `${API_ENDPOINT_PREFIX}/products/${API_ENDPOINT_SUFFIX}`,
-          query,
+          params,
         };
       },
       transformResponse: (response, _, { page, category }) => ({
@@ -37,9 +37,8 @@ export const productService = apiService.injectEndpoints({
     }),
     getProduct: build.query({
       query: (id) => ({
-        url: `${API_ENDPOINT_PREFIX}/products/${API_ENDPOINT_SUFFIX}`,
-        param: { id },
-        query: { depth },
+        url: `${API_ENDPOINT_PREFIX}/products/${API_ENDPOINT_SUFFIX}/${id}`,
+        params: { depth },
       }),
       transformResponse: (response) => response.data,
     }),
