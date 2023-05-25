@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { usePostIssueMutation } from "../services/touchpoint";
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 import Heading from "../components/Heading";
@@ -7,6 +9,19 @@ const SUBTITLE =
   "Do you have any complaint about your order? Please do let us know, so we can help.";
 
 const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
+  const [postIssue, { isLoading, isError, isSuccess }] = usePostIssueMutation();
+  const [status, setStatus] = useState("");
+  useEffect(() => {
+    setStatus(() =>
+      isError
+        ? `Could't process your request, please try again`
+        : isSuccess
+        ? "Your message has been sent"
+        : ""
+    );
+  }, [isError, isSuccess]);
+
+  //TODO: useMemo for disabled state
   const schema = {
     title: "Contact",
     type: "object",
@@ -34,17 +49,20 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
     description: {
       "ui:widget": "textarea",
     },
-    'ui:submitButtonOptions': {
-        props: {
-          disabled: false,
-          className: 'btn btn-orange',
-        },
-        norender: false,
-        submitText: 'Send',
+    "ui:submitButtonOptions": {
+      props: {
+        disabled: isLoading,
+        className: "btn btn-orange",
       },
+      norender: false,
+      submitText: "Send",
+    },
   };
 
-  const log = (type, e) => console.log.bind(console, type, e);
+  const log = (type, data) => console.error(type, data);
+  const onSubmit = ({ formData }) => {
+    postIssue(formData);
+  };
 
   return (
     <section className="page-wrapper innerpage-section-padding">
@@ -59,9 +77,8 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
                   schema={schema}
                   uiSchema={uiSchema}
                   validator={validator}
-                  onChange={(e) => log("changed", e)}
-                  onSubmit={(e) => log("submitted", e)}
-                  onError={(e) => log("errors", e)}
+                  onSubmit={onSubmit}
+                  onError={log}
                 />
                 <vue-base64-file-upload
                   class="v1 form-group"
@@ -74,10 +91,12 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
                   file="onFile"
                   load="onLoad"
                 />
-                <button onClick="processForm" className="btn btn-orange">
-                  Submit
-                </button>
-                <div className="status form-group">{status}</div>
+                {isLoading && (
+                  <div className="spinner-grow spinner-grow-sm" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                )}
+                {status && <div className="status form-group">{status}</div>}
               </div>
             </div>
           </div>

@@ -64,6 +64,7 @@ const Contact = ({ title = TITLE, subtitle = SUBTITLE, content = CONTENT }) => {
     },
   };
 
+  //TODO: useMemo for disabled state
   const uiSchema = {
     name: {
       "ui:autofocus": true,

@@ -1,10 +1,9 @@
 import { createRoot } from "react-dom/client";
-import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { Provider, useSelector, useDispatch } from "react-redux";
-import { store } from "./store/store";
-import { toggleCart, toggleNav, setPageMeta } from "./store/layoutSlice";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
 import useCart from "./hooks/useCart";
+import useLayout from "./hooks/useLayout";
+import { store } from "./store/store";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CartDrawer from "./components/layout/CartDrawer";
@@ -27,20 +26,12 @@ import Support from "./pages/Support";
 import Checkout from "./pages/Checkout";
 
 const App = () => {
-  const loader = useSelector((state) => state.layout.loader);
-  const showNav = useSelector((state) => state.layout.showNav);
-  const showCart = useSelector((state) => state.layout.showCart);
-  const pageMeta = useSelector((state) => state.layout.pageMeta);
+  const { loader, showNav, showCart, pageMeta, displayCart, displayNav } = useLayout();
   const { cart, subtotal, total, discount, cartAction } = useCart();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  useEffect(() => {
-    dispatch(setPageMeta(location.pathname));
-  }, [location]);
 
   return (
     <section className="main">
-      <SideNav showNav={showNav} toggle={() => dispatch(toggleNav(!showNav))} />
+      <SideNav showNav={showNav} toggle={() => displayNav(!showNav)} />
       <CartDrawer
         showCart={showCart}
         cart={cart}
@@ -48,15 +39,15 @@ const App = () => {
         subtotal={subtotal}
         total={total}
         onChange={cartAction}
-        toggle={() => dispatch(toggleCart(!showCart))}
+        toggle={() => displayCart(!showCart)}
       />
       <div className="canvas">
         <BackDrop />
         <Header cartItemsCount={cart.length} />
         <Sticky
           cartItemsCount={cart.length}
-          toggleCart={() => dispatch(toggleCart(true))}
-          toggleNav={() => dispatch(toggleNav(true))}
+          toggleCart={() => displayCart(true)}
+          toggleNav={() => displayNav(true)}
         />
         {pageMeta?.cover && <Hero pageMeta={pageMeta} />}
         <Routes>

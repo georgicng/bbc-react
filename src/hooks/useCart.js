@@ -24,7 +24,6 @@ const useCart = () => {
   const deleteItem = (payload) => {
     dispatch(remove(payload));
   };
-
   const changeQuantity = (payload) => {
     dispatch(update(payload));
   };
