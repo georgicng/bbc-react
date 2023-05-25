@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import { store } from "./store/store";
-import { toggleCart, toggleNav, setPageMeta } from "./store/commonSlice";
+import { toggleCart, toggleNav, setPageMeta } from "./store/layoutSlice";
 import useCart from "./hooks/useCart";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -22,13 +22,16 @@ import Product from "./pages/Product";
 import Products from "./pages/Products";
 import Success from "./pages/Success";
 import Terms from "./pages/Terms";
+import Contact from "./pages/Contact";
+import Support from "./pages/Support";
+import Checkout from "./pages/Checkout";
 
 const App = () => {
-  const loader = useSelector((state) => state.common.loader);
-  const showNav = useSelector((state) => state.common.showNav);
-  const showCart = useSelector((state) => state.common.showCart);
-  const pageMeta = useSelector((state) => state.common.pageMeta);
-  const {cart, subtotal, total, discount, cartAction } = useCart();
+  const loader = useSelector((state) => state.layout.loader);
+  const showNav = useSelector((state) => state.layout.showNav);
+  const showCart = useSelector((state) => state.layout.showCart);
+  const pageMeta = useSelector((state) => state.layout.pageMeta);
+  const { cart, subtotal, total, discount, cartAction } = useCart();
   const dispatch = useDispatch();
   const location = useLocation();
   useEffect(() => {
@@ -57,13 +60,16 @@ const App = () => {
         />
         {pageMeta?.cover && <Hero pageMeta={pageMeta} />}
         <Routes>
-          <Route path="/about" element={<About />} />
-          <Route path="/cart" element={<Cart />} />
           <Route path="/categories" element={<Categories />} />
-          <Route path="/faq" element={<Faq />} />
-          <Route path="/details/:id" element={<Product />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/details/:id" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/support" element={<Support />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/" element={<Home />} />
         </Routes>

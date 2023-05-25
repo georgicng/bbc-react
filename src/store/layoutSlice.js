@@ -3,8 +3,8 @@ import { MENU } from "../config";
 
 const metaMap = MENU.reduce((acc, menu) => ({...acc, [menu.path]: menu}), {})
 
-export const commonSlice = createSlice({
-  name: "common",
+export const layoutSlice = createSlice({
+  name: "layout",
   initialState: {
      loader: false, showNav: false, showCart: false, pageMeta: null,
   },
@@ -24,6 +24,6 @@ export const commonSlice = createSlice({
   },
 });
 
-export const { toggleCart, toggleNav, showLoader, setPageMeta } = commonSlice.actions;
+export const { toggleCart, toggleNav, showLoader, setPageMeta } = layoutSlice.actions;
 
-export default commonSlice.reducer;
+export default layoutSlice.reducer;

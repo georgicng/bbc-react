@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-import { useGetFaqQuery } from "../services/faq";
-import { useDispatch } from "react-redux";
-import { showLoader } from "../store/commonSlice";
+import { useGetFaqQuery } from "../services/touchpoint";
+import useLoader from "../hooks/useLoader";
 import { Accordion, AccordionItem } from "@szhsin/react-accordion";
 import Heading from "../components/Heading";
 import ErrorBanner from "../components/ErrorBanner";
@@ -11,10 +9,7 @@ export default function Faq({
   subtitle = "Find answers to your questions below",
 }) {
   const { data, isLoading, error, refetch } = useGetFaqQuery(null);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(showLoader(isLoading));
-  }, [isLoading]);
+  useLoader(isLoading)
 
   if (error) {
     return <ErrorBanner error={error} refetch={refetch} />;

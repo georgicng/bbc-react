@@ -11,6 +11,13 @@ const limit = PAGE_SIZE;
 
 export const productService = apiService.injectEndpoints({
   endpoints: (build) => ({
+    getCategories: build.query({
+      query: () => ({
+        url: `${API_ENDPOINT_PREFIX}/categories/${API_ENDPOINT_SUFFIX}`,
+        params: { depth: 1 },
+      }),
+      transformResponse: (response) => response.data,
+    }),
     getProducts: build.query({
       query: (payload) => {
         const { page = 1, category = 0 } = payload;
@@ -46,4 +53,4 @@ export const productService = apiService.injectEndpoints({
 });
 
 // Auto-generated hooks
-export const { useGetProductsQuery, useGetProductQuery } = productService;
+export const { useGetProductsQuery, useGetProductQuery, useGetCategoriesQuery } = productService;

@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { showLoader } from "../store/commonSlice";
-import { useGetCategoriesQuery } from "../services/category";
+import useLoader from "../hooks/useLoader";
+import { useGetCategoriesQuery } from "../services/products";
 import { getImage, getLink } from "../utils";
 import { Link } from "react-router-dom";
 import ErrorBanner from "../components/ErrorBanner";
@@ -13,10 +11,7 @@ const Categories = () => {
     error,
     refetch,
   } = useGetCategoriesQuery(null);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(showLoader(isLoading));
-  }, [isLoading]);
+  useLoader(isLoading);
 
   if (error) {
     return <ErrorBanner error={error} refetch={refetch} />;

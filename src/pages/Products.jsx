@@ -1,9 +1,7 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { showLoader } from "../store/commonSlice";
+import useLoader from "../hooks/useLoader";
 import { useSearchParams } from "react-router-dom";
 import { useGetProductsQuery } from "../services/products";
-import { useGetCategoriesQuery } from "../services/category";
+import { useGetCategoriesQuery } from "../services/products";
 import ReactPaginate from "react-paginate";
 import Heading from "../components/Heading";
 import ErrorBanner from "../components/ErrorBanner";
@@ -16,12 +14,8 @@ const Products = () => {
     isLoading,
     error,
     refetch,
-  } = useGetProductsQuery({ category: searchParams.get("category") });
-  
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(showLoader(isLoading));
-  }, [isLoading]);
+  } = useGetProductsQuery({ category: searchParams.get("category") });  
+  useLoader(isLoading);
 
   const { data: categories } = useGetCategoriesQuery(null);  
 

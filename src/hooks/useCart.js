@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { remove, update } from "../store/orderSlice";
+import { add, remove, update } from "../store/orderSlice";
 
 const useCart = () => {
   const cart = useSelector((state) => state.order.cart);
@@ -18,6 +18,9 @@ const useCart = () => {
   //const total = useSelector((state) => ((subtotal + state.shippingFee) - discount));
 
   const dispatch = useDispatch();
+  const addItem = (payload) => {
+    dispatch(add(payload));
+  };
   const deleteItem = (payload) => {
     dispatch(remove(payload));
   };
@@ -42,6 +45,7 @@ const useCart = () => {
     discount,
     shippingFee,
     total,
+    addItem,
     deleteItem,
     changeQuantity,
     cartAction,

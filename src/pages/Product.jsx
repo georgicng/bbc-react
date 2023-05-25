@@ -1,10 +1,9 @@
 import { useParams } from "react-router-dom";
+import useLoader from "../hooks/useLoader";
 import { useGetProductQuery } from "../services/products";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { showLoader } from "../store/commonSlice";
-import { add } from "../store/orderSlice";
+import useCart from "../hooks/useCart";
 import { OPTION_KEY_MAP, OPTION_TYPE_MAP } from "../config";
 import {
   getOptions,
@@ -33,26 +32,19 @@ const transform = (model, key = "id") =>
   }, {});
 
 const Product = () => {
-  //TODO: validation, imer
+  //TODO: validation, imer  
+  const { id } = useParams();
+  const { data: product, isLoading, error, refetch } = useGetProductQuery(id);
+  useLoader(isLoading);
+
+  
   const multi = false;
   const [options, setOptions] = useState([]);
   const [incrementMap, setIncrementMap] = useState({});
   const [normalPrice, setNormalPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [valid, setValid] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [pristine, setPristine] = useState(true);
-  const [errorBag, setErrorBag] = useState({});
   const [price, setPrice] = useState(0);
   const [model, setModel] = useState({});
-  const { id } = useParams();
-  const { data: product, isLoading, error, refetch } = useGetProductQuery(id);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(showLoader(isLoading));
-  }, [isLoading]);
-
   useEffect(() => {
     if (!product) {
       return;
@@ -76,6 +68,11 @@ const Product = () => {
     setIncrementMap(() => getOptionIncrementMap(product, OPTION_TYPE_MAP));
   }, [product]);
 
+  
+  const [valid, setValid] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [pristine, setPristine] = useState(true);
+  const [errorBag, setErrorBag] = useState({});
   const validate = (model) => {
     const _errorBag = {};
     options.forEach((option) => {
@@ -153,6 +150,7 @@ const Product = () => {
     pristine && setPristine(() => false);
   };
 
+  const { addItem } = useCart();
   const navigate = useNavigate();
   const addToCart = () => {
     if (!valid) {
@@ -160,14 +158,12 @@ const Product = () => {
       setShowError(() => true);
       return;
     }
-    dispatch(
-      add({
-        line: product,
-        options: transform(model, "label"),
-        quantity,
-        price,
-      })
-    );
+    addItem({
+      line: product,
+      options: transform(model, "label"),
+      quantity,
+      price,
+    });
     navigate("/cart");
   };
 
