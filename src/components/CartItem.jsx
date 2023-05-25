@@ -35,11 +35,11 @@ const CartItem = ({ line, price, quantity, options, onChange }) => {
         <LineOptions options={options} />
       </div>
       <div className="total">
-        Total: <span>N{price}</span>
+        Total: <span>N{parseFloat(price) * parseInt(quantity)}</span>
       </div>
 
       <div className="item-close">
-        <button className="btn" onClick={() => onChange("remove", line.id)}>
+        <button className="btn" onClick={() => onChange("delete")}>
           <span>
             <i className="fa fa-times-circle"></i>
           </span>

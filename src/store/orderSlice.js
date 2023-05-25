@@ -13,8 +13,8 @@ export const orderSlice = createSlice({
       //action is cart index
       state.cart.splice(payload, 1);
     },
-    update: (state, {payload: {_index, quantity}}) => {
-      state.cart[_index].quantity = quantity;
+    update: (state, {payload: {index, quantity}}) => {
+      state.cart[index].quantity = quantity;
     },
     clear: (state) => {
       state.cart = [];

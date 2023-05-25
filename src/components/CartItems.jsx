@@ -2,6 +2,12 @@ import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 
 const CartItems = ({ cart, onChange }) => {
+  const handleChange = (index) => {
+    return (action, quantity = null) => {      
+      onChange(action, quantity ? { index, quantity } : index) 
+    }
+  }
+
   if (!cart.length) {
     return (
       <>
@@ -14,12 +20,12 @@ const CartItems = ({ cart, onChange }) => {
       </>
     );
   }
-  
+
   return (
     <ul className="list-unstyled cart-list">
-      {cart.map((item) => (
+      {cart.map((item, index) => (
         <li key={item.line.id}>
-          <CartItem {...item} onChange={onChange} />
+          <CartItem {...item} onChange={handleChange(index)} />
         </li>
       ))}
     </ul>

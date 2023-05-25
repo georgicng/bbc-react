@@ -1,21 +1,16 @@
-import { remove, update } from "../store/orderSlice";
 import useCart from "../hooks/useCart";
-import { useDispatch } from "react-redux";
 import Heading from "../components/Heading";
-import { Link } from "react-router-dom";
 import CartItems from "../components/CartItems";
 import Coupon from "../components/Coupon";
 import CartTotals from "../components/CartTotals";
 
 const Cart = ({ title = "Your Cart" }) => {
-  //TODO: import cartslice and map to variables
-  const dispatch = useDispatch();
-  const { cart, discount, subtotal, total } = useCart();
+  const { cart, discount, subtotal, total, cartAction } =
+    useCart();
 
-  const handleChange = (key, value) => {
-    console.log({ key, value });
-    //dispatch(update());
-  };
+  const redeemCoupon = (coupon) => {
+    console.log(coupon)
+  }
 
   return (
     <section className="page-wrapper innerpage-section-padding">
@@ -25,9 +20,9 @@ const Cart = ({ title = "Your Cart" }) => {
           <div className="no-back">
             <div className="row">
               <div className="col-sm-12 offset-lg-2 col-lg-8">
-                <CartItems cart={cart} onChange={handleChange} />
+                <CartItems cart={cart} onChange={cartAction} />
                 {cart.length && discount <= 0 && (
-                  <Coupon onClick={handleChange} />
+                  <Coupon onClick={redeemCoupon} />
                 )}
                 {cart.length && (
                   <CartTotals

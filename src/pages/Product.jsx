@@ -48,11 +48,19 @@ const Product = () => {
   const { id } = useParams();
   const { data: product, isLoading, error, refetch } = useGetProductQuery(id);
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(showLoader(isLoading));
+  }, [isLoading]);
+
   useEffect(() => {
     if (!product) {
       return;
     }
-    const optionList = getOptions(product, OPTION_TYPE_MAP);
+    const sortArray = Object.values(OPTION_KEY_MAP);
+    const optionList = getOptions(product, OPTION_TYPE_MAP).sort(
+      (a, b) => sortArray.indexOf(a.name) - sortArray.indexOf(b.name)
+    );
     setOptions(() => optionList);
     setModel(() =>
       optionList.reduce(
@@ -67,11 +75,6 @@ const Product = () => {
     setPrice(() => parseFloat(product.price));
     setIncrementMap(() => getOptionIncrementMap(product, OPTION_TYPE_MAP));
   }, [product]);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(showLoader(isLoading));
-  }, [isLoading]);
 
   const validate = (model) => {
     const _errorBag = {};
@@ -110,7 +113,6 @@ const Product = () => {
     if (multi && !quantity) {
       _errorBag["quantity"] = `Please specify the quantity`;
     }
-    console.log({ options, _errorBag, model });
     setValid(() => !Object.keys(_errorBag).length);
     setErrorBag(() => _errorBag);
   };
@@ -139,16 +141,15 @@ const Product = () => {
       };
     }
 
-    if (newModel) {
-      setModel(() => newModel);
-    }
+    newModel && setModel(() => newModel);
+
     setPrice(
       () =>
-        (calculateTotalIncrement(transform(newModel ? newModel : model)) +
-          normalPrice) *
+        (calculateTotalIncrement(transform(newModel || model)) + normalPrice) *
         quantity
     );
-    validate(newModel ? newModel : model);
+
+    validate(newModel || model);
     pristine && setPristine(() => false);
   };
 
@@ -170,12 +171,12 @@ const Product = () => {
     navigate("/cart");
   };
 
-  if (error) {
-    return <ErrorBanner error={error} refetch={refetch} />;
-  }
-
   if (!product) {
     return <>Empty</>;
+  }
+
+  if (error) {
+    return <ErrorBanner error={error} refetch={refetch} />;
   }
 
   return (
@@ -218,13 +219,15 @@ const Product = () => {
                         />
                       </div>
                       {showError && errorBag[OPTION_KEY_MAP.QUANTITY] && (
-                        <div className="error d-flex">{errorBag[OPTION_KEY_MAP.QUANTITY][0]}</div>
+                        <div className="error d-flex">
+                          {errorBag[OPTION_KEY_MAP.QUANTITY][0]}
+                        </div>
                       )}
                     </div>
                   )}
 
                   <div className="form-group">
-                    <span className="font-weight-bold">Total :</span>
+                    <span className="font-weight-bold">Total:</span>{" "}
                     <span className="price">N{price}</span>
                   </div>
                   <button onClick={addToCart} className="btn btn-orange">

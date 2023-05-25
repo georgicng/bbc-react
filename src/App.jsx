@@ -28,7 +28,7 @@ const App = () => {
   const showNav = useSelector((state) => state.common.showNav);
   const showCart = useSelector((state) => state.common.showCart);
   const pageMeta = useSelector((state) => state.common.pageMeta);
-  const {cart, subtotal, total } = useCart();
+  const {cart, subtotal, total, discount, cartAction } = useCart();
   const dispatch = useDispatch();
   const location = useLocation();
   useEffect(() => {
@@ -41,8 +41,10 @@ const App = () => {
       <CartDrawer
         showCart={showCart}
         cart={cart}
+        discount={discount}
         subtotal={subtotal}
         total={total}
+        onChange={cartAction}
         toggle={() => dispatch(toggleCart(!showCart))}
       />
       <div className="canvas">

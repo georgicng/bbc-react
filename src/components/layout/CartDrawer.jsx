@@ -1,7 +1,7 @@
 import CartItems from "../CartItems";
 import CartTotals from "../CartTotals";
 
-const CartDrawer = ({ showCart, cart, total, subtotal, toggle }) => {
+const CartDrawer = ({ showCart, cart, total, discount, subtotal, toggle, onChange }) => {
   return (
     <div
       id="shopping-cart-sidebar"
@@ -16,9 +16,9 @@ const CartDrawer = ({ showCart, cart, total, subtotal, toggle }) => {
           &times;
         </button>
       </div>
-      <CartItems cart={cart} />
+      <CartItems cart={cart} onChange={onChange} />
       {cart.length && (
-        <CartTotals link="cart" subtotal={subtotal} total={total} />
+        <CartTotals link="cart" discount={discount} subtotal={subtotal} total={total} />
       )}
     </div>
   );

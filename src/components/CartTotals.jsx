@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 const LINK_MAP = {
   cart: "View Cart",
-  product: "Continue Shopping",
+  products: "Continue Shopping",
 };
 
 const CartTotals = ({ link, subtotal, discount, total }) => {
@@ -22,7 +22,7 @@ const CartTotals = ({ link, subtotal, discount, total }) => {
         {LINK_MAP[link]}
       </Link>
       <Link to="/checkout" className="btn btn-orange">
-        Pay Now
+        Checkout
       </Link>
     </div>
   );

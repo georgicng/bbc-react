@@ -9,10 +9,12 @@ export const DEPTH_SIZE = 3;
 export const CUSTOM_PRODUCT_ID = 12;
 
 export const OPTION_KEY_MAP = Object.freeze({
-  QUANTITY: "quantity",
-  SIZE: "size",
-  FLAVOURS: "flavours",
+  SIZE: "size",  
   COLORS: "colors",
+  FLAVOURS: "flavours",
+  MESSAGE: "message",
+  NOTE: "note",
+  QUANTITY: "quantity",
 });
 
 export const OPTION_TYPE_MAP = Object.freeze({

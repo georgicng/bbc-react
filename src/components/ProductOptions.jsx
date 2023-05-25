@@ -9,7 +9,7 @@ const ProductOptions = ({ options, model, errors, showError, onChange }) => {
           {option.type == OPTION_TYPE_MAP.TEXTBOX && (
             <div>
               <label htmlFor={option.id} className="font-weight-bold">
-                {option.name}
+                {option.label}
               </label>
 
               <input
@@ -27,7 +27,7 @@ const ProductOptions = ({ options, model, errors, showError, onChange }) => {
           {option.type == OPTION_TYPE_MAP.SELECT && (
             <div>
               <label htmlFor={option.name} className="font-weight-bold">
-                {option.name}
+                {option.label}
               </label>
               <Multiselect
                 displayValue="label"
@@ -43,7 +43,7 @@ const ProductOptions = ({ options, model, errors, showError, onChange }) => {
           {option.type == OPTION_TYPE_MAP.RADIO && (
             <div>
               <label htmlFor={option.id} className="font-weight-bold">
-                {option.name}
+                {option.label}
               </label>
               {option.options.map((value) => (
                 <div className="custom-control custom-radio" key={value.id}>
@@ -66,7 +66,7 @@ const ProductOptions = ({ options, model, errors, showError, onChange }) => {
           {option.type == OPTION_TYPE_MAP.CHECKBOX && (
             <div>
               <label htmlFor={option.name} className="font-weight-bold">
-                {option.name}
+                {option.label}
               </label>
               <Multiselect
                 displayValue="label"
@@ -83,7 +83,7 @@ const ProductOptions = ({ options, model, errors, showError, onChange }) => {
           {option.type == OPTION_TYPE_MAP.TEXTAREA && (
             <div>
               <label htmlFor={option.name} className="font-weight-bold">
-                {option.name}
+                {option.label}
               </label>
               <textarea
                 className="form-control"
