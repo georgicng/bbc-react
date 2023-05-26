@@ -4,26 +4,31 @@ const LINK_MAP = {
   products: "Continue Shopping",
 };
 
-const CartTotals = ({ link, subtotal, discount, total }) => {
+const CartTotals = ({ link, subtotal, shipping, discount, total }) => {
   return (
     <div className="cart-info text-right">
       <h4>
-        Sub-total: <span>N{ subtotal }</span>
+        Sub-total: <span>N{subtotal}</span>
       </h4>
+      {shipping && <h4>Delivery Cost: <span>N{shipping}</span></h4>}
       {discount > 0 && (
         <h4>
-          Discount (coupon): <span>- N{ discount }</span>
+          Discount (coupon): <span>- N{discount}</span>
         </h4>
       )}
       <h4>
-        Total: <span>N{ total }</span>
+        Total: <span>N{total}</span>
       </h4>
-      <Link to={`/${link}`} className="btn btn-black">
-        {LINK_MAP[link]}
-      </Link>
-      <Link to="/checkout" className="btn btn-orange">
-        Checkout
-      </Link>
+      {link && (
+        <>
+          <Link to={`/${link}`} className="btn btn-black">
+            {LINK_MAP[link]}
+          </Link>
+          <Link to="/checkout" className="btn btn-orange">
+            Checkout
+          </Link>
+        </>
+      )}
     </div>
   );
 };

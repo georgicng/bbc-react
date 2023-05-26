@@ -88,6 +88,7 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
     };
   };
   const onSubmit = async ({ formData }) => {
+    //TODO: check size limit (3MB)
     formData.file && (await uploadFile(getFilePayload(formData.file)));
     await postIssue(formData);
   };

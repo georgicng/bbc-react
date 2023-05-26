@@ -10,12 +10,18 @@ const useCart = () => {
       return (acc += parseFloat(item.price) * parseInt(item.quantity));
     }, 0)
   );
-  const shippingFee = useSelector((state) => state.order.shippingFee);
+  const shippingRate = useSelector((state) => state.order.shippingRate);
   const total = useMemo(
-    () => parseFloat(subtotal) + parseFloat(shippingFee) - parseFloat(discount),
-    [subtotal, shippingFee, discount]
+    () => parseFloat(subtotal) + parseFloat(shippingRate) - parseFloat(discount),
+    [subtotal, shippingRate, discount]
   );
   //const total = useSelector((state) => ((subtotal + state.shippingFee) - discount));
+  const express = useSelector((state) => state.order.express);
+  const user = useSelector((state) => state.order.user);
+  const shipping = useSelector((state) => state.order.shipping);
+  const delivery = useSelector((state) => state.order.delivery);
+  const payment = useSelector((state) => state.order.payment);
+  const tos = useSelector((state) => state.order.tos);
 
   const dispatch = useDispatch();
   const addItem = (payload) => {
@@ -42,8 +48,14 @@ const useCart = () => {
     cart,
     subtotal,
     discount,
-    shippingFee,
+    shippingRate,
     total,
+    express,
+    shipping,
+    payment,
+    user,
+    tos,
+    delivery,
     addItem,
     deleteItem,
     changeQuantity,
