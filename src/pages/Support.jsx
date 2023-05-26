@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { usePostIssueMutation } from "../services/touchpoint";
+import { useId } from "react";
+import {
+  usePostIssueMutation,
+  usePostFileMutation,
+} from "../services/touchpoint";
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 import Heading from "../components/Heading";
@@ -10,6 +14,8 @@ const SUBTITLE =
 
 const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
   const [postIssue, { isLoading, isError, isSuccess }] = usePostIssueMutation();
+  const [uploadFile, { isLoading: uploading, isError: failed }] =
+    usePostFileMutation();
   const [status, setStatus] = useState("");
   useEffect(() => {
     setStatus(() =>
@@ -19,18 +25,18 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
         ? "Your message has been sent"
         : ""
     );
-  }, [isError, isSuccess]);
+  }, [isError, isSuccess, failed]);
 
   //TODO: useMemo for disabled state
   const schema = {
-    title: "Contact",
     type: "object",
-    required: ["name", "subject", "email", "message"],
+    required: ["name", "subject", "email", "description"],
     properties: {
       name: { type: "string", title: "Name", default: "" },
       subject: { type: "string", title: "Subject", default: "" },
       email: { type: "string", title: "Email", default: "" },
-      description: { type: "string", title: "Message", default: "" },
+      description: { type: "string", title: "Description", default: "" },
+      file: { type: "string", format: "data-url", title: "Upload image" },
     },
   };
 
@@ -49,19 +55,41 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
     description: {
       "ui:widget": "textarea",
     },
+    file: {
+      "ui:options": {
+        filePreview: true,
+        accept: "image/png,image/jpeg",
+      },
+    },
     "ui:submitButtonOptions": {
       props: {
         disabled: isLoading,
         className: "btn btn-orange",
       },
       norender: false,
-      submitText: "Send",
+      submitText: "Submit",
     },
   };
 
-  const log = (type, data) => console.error(type, data);
-  const onSubmit = ({ formData }) => {
-    postIssue(formData);
+  const log = (type, e = null) => console.log(type, e);
+  const id = useId();
+  const getFilePayload = (data) => {
+    const title = `Issue ${id}`;
+    let name = data.split(";")[1];
+    if (name.startsWith("name=")) {
+      name = name.slice(5);
+    } else {
+      name = `${title}_evidence.${data.split(";")[0].split("/")[1]}`;
+    }
+    return {
+      title,
+      name,
+      data,
+    };
+  };
+  const onSubmit = async ({ formData }) => {
+    formData.file && (await uploadFile(getFilePayload(formData.file)));
+    await postIssue(formData);
   };
 
   return (
@@ -72,7 +100,7 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
 
           <div className="no-back">
             <div className="row">
-              <div className="col-sm-12 offset-lg-2 col-lg-8">
+              <div className="col-sm-12 offset-lg-2 col-lg-8 text-left">
                 <Form
                   schema={schema}
                   uiSchema={uiSchema}
@@ -80,18 +108,7 @@ const Support = ({ title = TITLE, subtitle = SUBTITLE }) => {
                   onSubmit={onSubmit}
                   onError={log}
                 />
-                <vue-base64-file-upload
-                  class="v1 form-group"
-                  accept="image/png,image/jpeg"
-                  image-class="v1-image"
-                  input-class="v1-input form-control"
-                  max-size="customImageMaxSize"
-                  disable-preview="true"
-                  size-exceeded="onSizeExceeded"
-                  file="onFile"
-                  load="onLoad"
-                />
-                {isLoading && (
+                {(isLoading || uploading) && (
                   <div className="spinner-grow spinner-grow-sm" role="status">
                     <span className="sr-only">Loading...</span>
                   </div>

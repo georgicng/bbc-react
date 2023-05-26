@@ -53,11 +53,10 @@ const Contact = ({ title = TITLE, subtitle = SUBTITLE, content = CONTENT }) => {
   }, [isError, isSuccess]);
 
   const schema = {
-    title: "Contact",
     type: "object",
     required: ["name", "subject", "email", "message"],
     properties: {
-      name: { type: "string", title: "Name", default: "" },
+      name: { type: "string", title: "Name" },
       subject: { type: "string", title: "Subject", default: "" },
       email: { type: "string", title: "Email", default: "" },
       message: { type: "string", title: "Message", default: "" },
@@ -68,6 +67,7 @@ const Contact = ({ title = TITLE, subtitle = SUBTITLE, content = CONTENT }) => {
   const uiSchema = {
     name: {
       "ui:autofocus": true,
+      //"ui:placeholder": "Name"
     },
     subject: {
       "ui:autocomplete": "given-name",
