@@ -8,7 +8,7 @@ function Confirmation({
   discount,
   shippingRate,
   subtotal,
-  toc,
+  tos,
   onChange,
 }) {
   return (
@@ -31,6 +31,7 @@ function Confirmation({
           className="custom-control-input"
           type="checkbox"
           id="tos"
+          checked={tos}
           onChange={(e) => onChange('tos', e.target.value)}
         />
         <label className="custom-control-label" htmlFor="tos">
@@ -41,7 +42,7 @@ function Confirmation({
             </Link>
           </h4>
         </label>
-        {!toc && (
+        {!tos && (
           <div className="error">
             You are required to agree to the terms and conditions
           </div>

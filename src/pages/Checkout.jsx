@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import useLoader from "../hooks/useLoader";
 import useCart from "../hooks/useCart";
 import { useGetCheckoutOptionsQuery } from "../services/order";
@@ -35,7 +35,6 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     const cityMap = getCityShippingMapping(shippingList?.home?.options);
     const cities = getCityList(options.shipping_method);
     const payments = getPaymentOptions(options.payment_methods);
-    console.log({ options, shippingList, cityMap, cities, payments });
     setShippingOptions(() => shippingList);
     setCityShippingMap(() => cityMap);
     setCityList(() => cities);
@@ -62,6 +61,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     addShipping,
     addPaymentMethod,
     addDeliveryPeriod,
+    acceptTerms
   } = useCart();
 
   const timeOptions = useMemo(
@@ -74,7 +74,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
         const: "1-3 PM",
         title: "1-3 PM",
       },
-      ...(express === "partner"
+      ...(shipping.type === "partner"
         ? [
             {
               const: "3-5 PM",
@@ -83,19 +83,30 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
           ]
         : []),
     ],
-    [express]
+    [shipping]
   );
 
   const steps = ["User details", "Shipping", "Confirmation", "Payment"];
 
-  const validateStep = () => {
-    setValidStep(false);
+  const userRef = useRef();
+  const deliveryRef = useRef();
+  const validateStep = (step) => {
+    switch (step) {
+      case 0:
+        return userRef.current.validate();
+      case 1:
+        return deliveryRef.current.validate();
+      case 2:
+        return tos;
+      default:
+        return true;
+    }
   };
 
   const navigateTo = (to, current) => {
-    validateStep();
-
-    setActiveStep(to);
+    const valid = validateStep(current);
+    setValidStep(() => valid);
+    valid && setActiveStep(to);
   };
 
   const handleChange = (key, value) => {
@@ -119,6 +130,9 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
       case "delivery":
         addDeliveryPeriod(value);
         break;
+      case "tos":
+        acceptTerms(tos ? false : true);
+        break;
       default:
         return null;
     }
@@ -129,6 +143,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
       case 0:
         return (
           <UserDetails
+            ref={userRef}
             user={user}
             cityList={cityList}
             onChange={handleChange}
@@ -137,6 +152,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
       case 1:
         return (
           <ShippingDetails
+            ref={deliveryRef}
             valid={validStep}
             shippingRate={shippingRate}
             delivery={delivery}

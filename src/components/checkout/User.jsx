@@ -1,10 +1,33 @@
+import { useRef, forwardRef, useImperativeHandle } from "react";
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 
-function User({ user, cityList, onChange}) {
+const User = forwardRef(function User({ user, cityList, onChange }, ref) {
+  const formRef = useRef();
+
+  useImperativeHandle(
+    ref, // forwarded ref
+    function () {
+      return {
+        validate() {
+          return formRef.current.validateForm();
+        },
+      }; // the forwarded ref value
+    },
+    []
+  );
+
   const schema = {
     type: "object",
-    required: ["firstName", "lastName", "email", "phone", "address", "landmark", "city"],
+    required: [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "address",
+      "landmark",
+      "city",
+    ],
     properties: {
       firstName: { type: "string", title: "First name" },
       lastName: { type: "string", title: "Last name" },
@@ -18,6 +41,26 @@ function User({ user, cityList, onChange}) {
         enum: cityList,
       },
     },
+    allOf: [
+      {
+        if: {
+          properties: {
+            city: {
+              const: "Other",
+            },
+          },
+        },
+        then: {
+          properties: {
+            altCity: {
+              type: "string",
+              title: "Other City" 
+            },
+          },
+          required: ["altCity"],
+        },
+      },
+    ],
   };
 
   const uiSchema = {
@@ -39,14 +82,15 @@ function User({ user, cityList, onChange}) {
 
   return (
     <Form
+      ref={formRef}
       formData={user}
       schema={schema}
       uiSchema={uiSchema}
       validator={validator}
-      onChange={({ formData }) => onChange('user', formData)}
+      onChange={({ formData }) => onChange("user", formData)}
       onError={(e) => console.log(e)}
     />
   );
-}
+});
 
 export default User;

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { add, remove, update, setUser, setShipping, setPayment, setDelivery } from "../store/orderSlice";
+import { add, remove, update, setUser, setShipping, setPayment, setDelivery, setTerms } from "../store/orderSlice";
 
 const useCart = () => {
   const cart = useSelector((state) => state.order.cart);
@@ -60,6 +60,10 @@ const useCart = () => {
     dispatch(setDelivery(payload));
   };
 
+  const acceptTerms = (payload) => {
+    dispatch(setTerms(payload));
+  };
+
   return {
     cart,
     subtotal,
@@ -79,7 +83,8 @@ const useCart = () => {
     addUserDetails,
     addShipping,
     addPaymentMethod,
-    addDeliveryPeriod
+    addDeliveryPeriod,
+    acceptTerms
   };
 };
 

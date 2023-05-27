@@ -1,21 +1,25 @@
+import { forwardRef } from "react";
 import DeliveryPeriod from "./shipping_cards/DeliveryPeriod";
 import ShippingRate from "./shipping_cards/ShippingRate";
 import PaymentMethod from "./shipping_cards/PaymentMethod";
 import ShippingMethod from "./shipping_cards/ShippingMethod";
 
-function Shipping({
-  valid,
-  shippingRate,
-  delivery,
-  timeOptions,
-  payment,
-  paymentOptions,
-  user,
-  shipping,
-  shippingOptions,
-  cityShippingMap,
-  onChange,
-}) {
+const Shipping = forwardRef(function Shipping(
+  {
+    valid,
+    shippingRate,
+    delivery,
+    timeOptions,
+    payment,
+    paymentOptions,
+    user,
+    shipping,
+    shippingOptions,
+    cityShippingMap,
+    onChange,
+  },
+  ref
+) {
   return (
     <div className="row">
       <div className="col-md-6 mb-3">
@@ -28,6 +32,7 @@ function Shipping({
           onChange={onChange}
         />
         <DeliveryPeriod
+          ref={ref}
           valid={valid && delivery?.time && delivery?.date}
           delivery={delivery}
           timeOptions={timeOptions}
@@ -45,6 +50,6 @@ function Shipping({
       </div>
     </div>
   );
-}
+});
 
 export default Shipping;
