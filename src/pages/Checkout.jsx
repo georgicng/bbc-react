@@ -1,5 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import useLoader from "../hooks/useLoader";
 import useCart from "../hooks/useCart";
+import { useGetCheckoutOptionsQuery } from "../services/order";
+import {
+  getCityList,
+  getShippingList,
+  getPaymentOptions,
+  getCityShippingMapping,
+} from "../utils";
 import Stepper from "../components/Stepper";
 import UserDetails from "../components/checkout/User";
 import ShippingDetails from "../components/checkout/Shipping";
@@ -7,59 +15,35 @@ import Confirmation from "../components/checkout/Confirmation";
 import PaymentDetails from "../components/checkout/Payment";
 
 const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
+  const {
+    data: options,
+    isLoading,
+    error,
+    refetch,
+  } = useGetCheckoutOptionsQuery();
+  useLoader(isLoading);
+
+  const [paymentOptions, setPaymentOptions] = useState([]);
+  const [shippingOptions, setShippingOptions] = useState({});
+  const [cityList, setCityList] = useState([]);
+  const [cityShippingMap, setCityShippingMap] = useState([]);
+  useEffect(() => {
+    if (!options) {
+      return;
+    }
+    const shippingList = getShippingList(options.shipping_method);
+    const cityMap = getCityShippingMapping(shippingList?.home?.options);
+    const cities = getCityList(options.shipping_method);
+    const payments = getPaymentOptions(options.payment_methods);
+    console.log({ options, shippingList, cityMap, cities, payments });
+    setShippingOptions(() => shippingList);
+    setCityShippingMap(() => cityMap);
+    setCityList(() => cities);
+    setPaymentOptions(() => payments);
+  }, [options]);
+
   const [activeStep, setActiveStep] = useState(0);
   const [validStep, setValidStep] = useState(false);
-  const cityList = [
-    {
-      const: "foo",
-      title: "Foo",
-    },
-    {
-      const: "bar",
-      title: "Bar",
-    },
-  ];
-  const cityShippingMapping = [
-    {
-      const: "foo",
-      title: "Foo",
-    },
-    {
-      const: "bar",
-      title: "Bar",
-    },
-  ];
-  const timeOptions = [
-    {
-      const: "foo",
-      title: "Foo",
-    },
-    {
-      const: "bar",
-      title: "Bar",
-    },
-  ];
-  const paymentOptions = [
-    {
-      const: "foo",
-      title: "Foo",
-    },
-    {
-      const: "bar",
-      title: "Bar",
-    },
-  ];
-
-  const shippingOptions = [
-    {
-      const: "foo",
-      title: "Foo",
-    },
-    {
-      const: "bar",
-      title: "Bar",
-    },
-  ];
 
   const bank = "";
   const {
@@ -74,7 +58,33 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     payment,
     express,
     shipping,
+    addUserDetails,
+    addShipping,
+    addPaymentMethod,
+    addDeliveryPeriod,
   } = useCart();
+
+  const timeOptions = useMemo(
+    () => [
+      {
+        const: "11-1 PM",
+        title: "11AM - 1PM",
+      },
+      {
+        const: "1-3 PM",
+        title: "1-3 PM",
+      },
+      ...(express === "partner"
+        ? [
+            {
+              const: "3-5 PM",
+              title: "3-5 PM",
+            },
+          ]
+        : []),
+    ],
+    [express]
+  );
 
   const steps = ["User details", "Shipping", "Confirmation", "Payment"];
 
@@ -82,13 +92,36 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     setValidStep(false);
   };
 
-  const navigateTo = (step) => {
+  const navigateTo = (to, current) => {
     validateStep();
-    setActiveStep(step);
+
+    setActiveStep(to);
   };
 
   const handleChange = (key, value) => {
     console.log({ key, value });
+    switch (key) {
+      case "user":
+        addUserDetails(value);
+        break;
+      case "shipping":
+        addShipping(value);
+        break;
+      case "express":
+        addShipping({
+          ...shipping,
+          express: shipping.express ? 0 : 1000,
+        });
+        break;
+      case "payment":
+        addPaymentMethod(value);
+        break;
+      case "delivery":
+        addDeliveryPeriod(value);
+        break;
+      default:
+        return null;
+    }
   };
 
   function getSectionComponent() {
@@ -114,7 +147,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
             shipping={shipping}
             shippingOptions={shippingOptions}
             express={express}
-            cityShippingMapping={cityShippingMapping}
+            cityShippingMap={cityShippingMap}
             onChange={handleChange}
           />
         );
@@ -138,18 +171,34 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
   }
 
   return (
-    <div>
-      <Stepper steps={steps} activeStep={activeStep} />
-      <div style={{ padding: "20px" }}>
-        {getSectionComponent()}
-        {activeStep !== 0 && activeStep !== steps.length - 1 && (
-          <button onClick={() => navigateTo(activeStep - 1)}>Previous</button>
-        )}
-        {activeStep !== steps.length - 1 && (
-          <button onClick={() => navigateTo(activeStep + 1)}>Next</button>
-        )}
+    <section className="page-wrapper innerpage-section-padding">
+      <div className="container-fluid">
+        <div id="checkout-page" className="no-back">
+          <div className="row">
+            <div className="col-sm-12 offset-lg-2 col-lg-8">
+              <Stepper steps={steps} activeStep={activeStep} />
+              <div style={{ padding: "20px" }}>
+                {getSectionComponent()}
+                {activeStep !== 0 && activeStep !== steps.length - 1 && (
+                  <button
+                    onClick={() => navigateTo(activeStep - 1, activeStep)}
+                  >
+                    Previous
+                  </button>
+                )}
+                {activeStep !== steps.length - 1 && (
+                  <button
+                    onClick={() => navigateTo(activeStep + 1, activeStep)}
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

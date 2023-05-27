@@ -4,15 +4,13 @@ export const orderSlice = createSlice({
   name: "order",
   initialState: {
     cart: [],
-    shipping: "",
+    shipping: {type: '', id: '', rate: 0, express: 0},
     payment: "",
-    express: false,
     coupon: false,
     discount: 0,
-    shippingRate: 0,
     user: {},
     tos: false,
-    delivery: {},
+    delivery: { date: '', time: '' },
   },
   reducers: {
     add: (state, { payload }) => {
@@ -28,35 +26,20 @@ export const orderSlice = createSlice({
     clear: (state) => {
       state.cart = [];
     },
-    addShippingAddress: (state, { payload }) => {
-      state.address = payload;
+    setShipping: (state, { payload }) => {
+      state.shipping = payload;
     },
-    addShippingMethod: (state, { payload }) => {
-      state.shipping = payload.id;
-    },
-    addPaymentmethod: (state, { payload }) => {
+    setPayment: (state, { payload }) => {
       state.payment = payload;
     },
-    addExpressShipping: (state, { payload }) => {
-      state.express = payload;
-    },
-    addDeliveryDate: (state, { payload }) => {
-      state.deliveryDate = payload;
-    },
-    addDeliveryTime: (state, { payload }) => {
-      state.deliveryTime = payload;
+    setDelivery: (state, { payload }) => {
+      state.delivery = payload;
     },
     setDiscount: (state, { payload }) => {
       state.discount = payload;
     },
-    setShippingRate: (state, { payload }) => {
-      state.shippingRate = payload;
-    },
-    setUserField: (state, { payload: { key, value } }) => {
-      state.user[key] = value;
-    },
-    setDeliveryField: (state, { payload: { key, value } }) => {
-      state.delivery[key] = value;
+    setUser: (state, { payload }) => {
+      state.user = payload;
     },
     setTerms: (state, { payload }) => {
       state.tos = payload;
@@ -64,6 +47,6 @@ export const orderSlice = createSlice({
   },
 });
 
-export const { add, remove, update } = orderSlice.actions;
+export const { add, remove, update, setUser, setShipping, setPayment, setDelivery } = orderSlice.actions;
 
 export default orderSlice.reducer;

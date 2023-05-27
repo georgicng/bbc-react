@@ -91,3 +91,77 @@ export const getOptionIncrement = (
   }
   return sum;
 };
+
+const SHIPPING_TYPES = {
+  HOME: 3,
+  PARTNER: 2,
+  STORE: 1,
+};
+export const getCityList = (shippingMethods) => {
+  if (!shippingMethods || !shippingMethods?.length) {
+    return {};
+  }
+
+  const cities = shippingMethods
+    .filter((item) => item.shipping_method.data.id == SHIPPING_TYPES.HOME)
+    .map((item) => item.title);
+  cities.push("Other");
+  return cities;
+};
+
+const shippingIdNameMap = {
+  3: "home",
+  2: "partner",
+  1: "store",
+};
+export const getShippingList = (shippingMethods) => {
+  if (!shippingMethods || !shippingMethods?.length) {
+    return {};
+  }
+  return shippingMethods.reduce((acc, item) => {
+    const name = item.shipping_method.data.name;
+    const key = shippingIdNameMap[item.shipping_method.data.id];
+    return {
+      ...acc,
+      [key]: {
+        ...(acc[key] ? acc[key] : { name }),
+        options: [
+          ...(acc[key] ? acc[key]["options"] : []),
+          { id: item.id, title: item.title, cost: item.cost },
+        ],
+      },
+    };
+  }, {});
+};
+
+export const getCityShippingMapping = (options) => {
+  if (!options || !options?.length) {
+    return {};
+  }
+
+  return options.reduce((acc, item) => ({ ...acc, [item.title]: item }), {});
+};
+
+const paymentIdNameMap = {
+  1: "transfer",
+  2: "card",
+};
+export const getPaymentOptions = (paymentMethods) => {
+  if (!paymentMethods || !paymentMethods?.length) {
+    return [];
+  }
+  return paymentMethods.map((method) => {
+    return {
+      id: paymentIdNameMap[method.id],
+      name: method.name,
+      description: method.description,
+      meta: method.settings.data.reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.key]: item.value,
+        }),
+        {}
+      ),
+    };
+  });
+};

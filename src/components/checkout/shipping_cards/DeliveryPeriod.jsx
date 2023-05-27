@@ -1,8 +1,7 @@
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 
-
-function Delivery({ valid, timeOptions, delivery, onChange }) {
+function DeliveryPeriod({ valid, timeOptions, delivery, onChange }) {
   const schema = {
     type: "object",
     properties: {
@@ -16,23 +15,13 @@ function Delivery({ valid, timeOptions, delivery, onChange }) {
   };
 
   const uiSchema = {
-    date: {
-      "ui:autofocus": true,
-    },
-    time: {
-      "ui:options": {
-        inputType: "email",
-      },
-    },
     "ui:submitButtonOptions": {
       norender: true,
     },
   };
 
   return (
-    <div
-      className={`${(!valid )? 'red' : ''} card my-3` }
-    >
+    <div className={`${!valid ? "red" : ""} card my-3`}>
       <div className="card-header">Delivery Day</div>
       <div className="card-body">
         <Form
@@ -40,13 +29,16 @@ function Delivery({ valid, timeOptions, delivery, onChange }) {
           schema={schema}
           uiSchema={uiSchema}
           validator={validator}
-          onChange={onChange}
+          onChange={({ formData }) => onChange("delivery", formData)}
         />
-        <small>For store pickups, you can call in to arrange an earlier time if need be</small>
-        {!valid && <div className="error" >Please select a delivery time</div>}
+        <small>
+          For store pickups, you can call in to arrange an earlier time if need
+          be
+        </small>        
       </div>
+      {!valid && <div className="card-body error">Please select a delivery time</div>}
     </div>
   );
 }
 
-export default Delivery;
+export default DeliveryPeriod;

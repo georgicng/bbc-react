@@ -11,7 +11,7 @@ function PaymentMethod({ valid, payment, paymentOptions, onChange }) {
               value={item.id}
               className="custom-control-input"
               checked={payment === item.id}              
-              onChange={(e) => onChange("shipping", e.target.value)}
+              onChange={(e) => onChange("payment", e.target.value)}
             />
             <label
               className="custom-control-label panel-body"
@@ -22,10 +22,10 @@ function PaymentMethod({ valid, payment, paymentOptions, onChange }) {
             </label>
           </div>
         ))}
-        {!valid && (
-          <div className="error">Please select a payment method</div>
+      </div>      
+      {!valid && (
+          <div className="card-body error">Please select a payment method</div>
         )}
-      </div>
     </div>
   );
 }

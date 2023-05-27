@@ -1,5 +1,5 @@
-import Delivery from "./shipping_cards/Delivery";
-import Rate from "./shipping_cards/Rate";
+import DeliveryPeriod from "./shipping_cards/DeliveryPeriod";
+import ShippingRate from "./shipping_cards/ShippingRate";
 import PaymentMethod from "./shipping_cards/PaymentMethod";
 import ShippingMethod from "./shipping_cards/ShippingMethod";
 
@@ -13,8 +13,7 @@ function Shipping({
   user,
   shipping,
   shippingOptions,
-  express,
-  cityShippingMapping,
+  cityShippingMap,
   onChange,
 }) {
   return (
@@ -25,18 +24,18 @@ function Shipping({
           user={user}
           shipping={shipping}
           shippingOptions={shippingOptions}
-          express={express}
-          cityShippingMapping={cityShippingMapping}
+          cityShippingMap={cityShippingMap}
+          onChange={onChange}
         />
-        <Delivery
+        <DeliveryPeriod
           valid={valid && delivery?.time && delivery?.date}
-          formdate={delivery}
+          delivery={delivery}
           timeOptions={timeOptions}
           onChange={onChange}
         />
       </div>
       <div className="col-md-6 mb-3">
-        <Rate shippingRate={shippingRate} />
+        <ShippingRate shippingRate={shippingRate} />
         <PaymentMethod
           valid={valid & payment}
           payment={payment}

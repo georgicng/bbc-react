@@ -1,6 +1,6 @@
 import { apiService } from "./api";
 import {
-  API_PREFIX,
+  API_CUSTOM_PREFIX,
   API_ENDPOINT_PREFIX,
   API_ENDPOINT_SUFFIX,
 } from "../config";
@@ -9,14 +9,14 @@ export const orderService = apiService.injectEndpoints({
   endpoints: (build) => ({
     addOrder: build.mutation({
       query: (body) => ({
-        url: `${API_PREFIX}/orders`,
+        url: `${API_CUSTOM_PREFIX}/orders`,
         method: "POST",
         body,
       }),
     }),
     confirmOrder: build.mutation({
       query: ({ order, ...body }) => ({
-        url: `${API_PREFIX}/orders/${order}`,
+        url: `${API_CUSTOM_PREFIX}/orders/${order}`,
         method: "POST",
         body,
       }),
@@ -46,7 +46,7 @@ export const orderService = apiService.injectEndpoints({
     }),
     getCheckoutOptions: build.query({
       query: () => ({
-        url: `${API_PREFIX}/checkout_options`,
+        url: `${API_CUSTOM_PREFIX}/checkout_options`,
       }),
     }),
   }),

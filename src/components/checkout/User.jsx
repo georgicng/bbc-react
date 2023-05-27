@@ -15,7 +15,7 @@ function User({ user, cityList, onChange}) {
       city: {
         type: "string",
         title: "City",
-        oneOf: cityList,
+        enum: cityList,
       },
     },
   };
@@ -43,7 +43,7 @@ function User({ user, cityList, onChange}) {
       schema={schema}
       uiSchema={uiSchema}
       validator={validator}
-      onChange={onChange}
+      onChange={({ formData }) => onChange('user', formData)}
       onError={(e) => console.log(e)}
     />
   );
