@@ -25,7 +25,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
 
   const [paymentOptions, setPaymentOptions] = useState([]);
   const [shippingOptions, setShippingOptions] = useState({});
-  const [cityList, setCityList] = useState([]);
+  const [cityList, setCityList] = useState(['Other']);
   const [cityShippingMap, setCityShippingMap] = useState([]);
   useEffect(() => {
     if (!options) {

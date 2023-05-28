@@ -1,5 +1,5 @@
 import LineOptions from "./LineOptions";
-import { getImage } from "../utils";
+import { getImage } from "../../utils";
 
 const CartItem = ({ readonly, line, price, quantity, options, onChange }) => {
 

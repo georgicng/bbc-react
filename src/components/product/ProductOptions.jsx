@@ -1,4 +1,4 @@
-import { OPTION_TYPE_MAP } from "../config";
+import { OPTION_TYPE_MAP } from "../../config";
 import Multiselect from "multiselect-react-dropdown";
 
 const ProductOptions = ({ options, model, errors, showError, onChange }) => {

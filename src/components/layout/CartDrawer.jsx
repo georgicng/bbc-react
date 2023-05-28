@@ -1,5 +1,5 @@
-import CartItems from "../CartItems";
-import CartTotals from "../CartTotals";
+import CartItems from "../cart/CartItems";
+import CartTotals from "../cart/CartTotals";
 
 const CartDrawer = ({ showCart, cart, total, discount, subtotal, toggle, onChange }) => {
   return (

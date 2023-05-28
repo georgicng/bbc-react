@@ -1,4 +1,4 @@
-import { getImage } from "../utils";
+import { getImage } from "../../utils";
 
 const ProductGallery = ({ product }) => {
   return (

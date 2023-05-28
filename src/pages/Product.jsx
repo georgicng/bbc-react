@@ -11,8 +11,8 @@ import {
   getOptionIncrementMap,
 } from "../utils";
 import Tabs from "../components/Tabs";
-import ProductGallery from "../components/ProductGallery";
-import ProductOptions from "../components/ProductOptions";
+import ProductGallery from "../components/product/ProductGallery";
+import ProductOptions from "../components/product/ProductOptions";
 import Title from "../components/Title";
 import ErrorBanner from "../components/ErrorBanner";
 

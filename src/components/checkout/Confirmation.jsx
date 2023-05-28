@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import CartItems from "../CartItems";
-import CartTotals from "../CartTotals";
+import CartItems from "../cart/CartItems";
+import CartTotals from "../cart/CartTotals";
 
 function Confirmation({
   cart,

@@ -5,7 +5,7 @@ import { useGetCategoriesQuery } from "../services/products";
 import ReactPaginate from "react-paginate";
 import Heading from "../components/Heading";
 import ErrorBanner from "../components/ErrorBanner";
-import ProductList from "../components/ProductList";
+import ProductList from "../components/product/ProductList";
 
 const Products = () => {
   const [searchParams] = useSearchParams();

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getImage } from "../utils";
+import { getImage } from "../../utils";
 
 const ProductList = ({ products }) => {
   return (

@@ -1,8 +1,8 @@
 import useCart from "../hooks/useCart";
 import Heading from "../components/Heading";
-import CartItems from "../components/CartItems";
-import Coupon from "../components/Coupon";
-import CartTotals from "../components/CartTotals";
+import CartItems from "../components/cart/CartItems";
+import Coupon from "../components/cart/Coupon";
+import CartTotals from "../components/cart/CartTotals";
 
 const Cart = ({ title = "Your Cart" }) => {
   const { cart, discount, subtotal, total, cartAction } =
