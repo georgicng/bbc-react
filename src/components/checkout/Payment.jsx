@@ -1,4 +1,4 @@
-function Payment({ payment, bank }) {
+function Payment({ payment, meta }) {
   return (
     <>
       {payment == "card" && (
@@ -26,7 +26,7 @@ function Payment({ payment, bank }) {
             Find our bank transfer details below and click on the{" "}
             <strong>Finish Button</strong> below to complete the transaction.
           </p>
-          <div className="bank-message">{bank}</div>
+          <div className="bank-message">{meta.bank}</div>
           {/*
             <p className="lead">
               <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>

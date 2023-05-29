@@ -279,7 +279,7 @@ figure {
   border-width: 1px;
   border-style: solid;
   position: absolute;
-  top: calc(50% - 10px);
+  top: calc(50% - 30px);
   left: calc(50% + 40px);
   width: calc(100% - 85px);
 }
@@ -292,37 +292,37 @@ figure {
 }
 
 .step-active .circle {
-  background: #3d84f5;
+  background: #ee4899;
   color: #fff;
 }
 
 .step-done .circle {
-  background: #236ee8;
+  background: #ee4899;
   color: #eee;
 }
 
 .step-inactive .circle {
-  background: #bbb;
-  color: #000;
+  background: rgba(0,0,0,.2);
+  color: rgba(0,0,0,.2);
 }
 
 .step-active .label {
-  color: #000;
+  color: #ee4899;
 }
 
 .step-done .label {
-  color: #222;
+  color: #ee4899;
 }
 
 .step-inactive .label {
-  color: #888;
+  color: rgba(0,0,0,.2);
 }
 
 .step-done .line {
-  border-color: #3d84f5;
+  border-color: #ee4899;
 }
 
 .step-inactive .line,
 .step-active .line {
-  border-color: #eee;
+  border-color: rgba(0,0,0,.2);
 }

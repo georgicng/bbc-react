@@ -17,10 +17,10 @@ function Stepper({ steps, activeStep }) {
   return(
     <div className="steps-container">
     {
-      steps.map((label, index) =>
-        <div className={getStepClass(index)} key={index}>
-          <div><div className="circle">{index + 1}</div></div>
-          <div className="label">{label}</div>
+      steps.map((item, index) =>
+        <div className={getStepClass(index)} key={item.key}>
+          <div><div className="circle"><i className={item.icon}></i></div></div>
+          <div className="label">{item.title}</div>
           { index < steps.length - 1 && <div className="line"></div> }
         </div>
       )

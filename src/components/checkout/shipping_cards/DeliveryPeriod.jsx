@@ -47,6 +47,7 @@ const DeliveryPeriod = forwardRef(function DeliveryPeriod(
           schema={schema}
           uiSchema={uiSchema}
           validator={validator}
+          showErrorList={false}
           onChange={({ formData }) => onChange("delivery", formData)}
         />
         <small>

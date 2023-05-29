@@ -1,13 +1,18 @@
 import { useRef, useEffect, useState, useMemo } from "react";
 import useLoader from "../hooks/useLoader";
 import useCart from "../hooks/useCart";
-import { useGetCheckoutOptionsQuery } from "../services/order";
+import {
+  useGetCheckoutOptionsQuery,
+  useAddOrderMutation,
+  useConfirmOrderMutation,
+} from "../services/order";
 import {
   getCityList,
   getShippingList,
   getPaymentOptions,
   getCityShippingMapping,
 } from "../utils";
+import Heading from "../components/Heading";
 import Stepper from "../components/Stepper";
 import UserDetails from "../components/checkout/User";
 import ShippingDetails from "../components/checkout/Shipping";
@@ -25,7 +30,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
 
   const [paymentOptions, setPaymentOptions] = useState([]);
   const [shippingOptions, setShippingOptions] = useState({});
-  const [cityList, setCityList] = useState(['Other']);
+  const [cityList, setCityList] = useState(["Other"]);
   const [cityShippingMap, setCityShippingMap] = useState([]);
   useEffect(() => {
     if (!options) {
@@ -41,10 +46,6 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     setPaymentOptions(() => payments);
   }, [options]);
 
-  const [activeStep, setActiveStep] = useState(0);
-  const [validStep, setValidStep] = useState(false);
-
-  const bank = "";
   const {
     user,
     delivery,
@@ -61,7 +62,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     addShipping,
     addPaymentMethod,
     addDeliveryPeriod,
-    acceptTerms
+    acceptTerms,
   } = useCart();
 
   const timeOptions = useMemo(
@@ -74,7 +75,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
         const: "1-3 PM",
         title: "1-3 PM",
       },
-      ...(shipping.type === "partner"
+      ...(shipping?.type === "partner"
         ? [
             {
               const: "3-5 PM",
@@ -85,29 +86,6 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     ],
     [shipping]
   );
-
-  const steps = ["User details", "Shipping", "Confirmation", "Payment"];
-
-  const userRef = useRef();
-  const deliveryRef = useRef();
-  const validateStep = (step) => {
-    switch (step) {
-      case 0:
-        return userRef.current.validate();
-      case 1:
-        return deliveryRef.current.validate();
-      case 2:
-        return tos;
-      default:
-        return true;
-    }
-  };
-
-  const navigateTo = (to, current) => {
-    const valid = validateStep(current);
-    setValidStep(() => valid);
-    valid && setActiveStep(to);
-  };
 
   const handleChange = (key, value) => {
     console.log({ key, value });
@@ -138,7 +116,17 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     }
   };
 
-  function getSectionComponent() {
+  const steps = [
+    { title: "User Details", icon: "fa fa-user", key: "user" },
+    { title: "Delivery Details", icon: "fa fa-truck", key: "shipping" },
+    { title: "Confirm Order", icon: "fa fa-check", key: "confirm" },
+    { title: "Complete Order", icon: "fa fa-credit-card", key: "pay" },
+  ];
+  const [activeStep, setActiveStep] = useState(0);
+  const [validStep, setValidStep] = useState(false);
+  const userRef = useRef();
+  const deliveryRef = useRef();
+  const getSectionComponent = () => {
     switch (activeStep) {
       case 0:
         return (
@@ -180,23 +168,62 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
           />
         );
       case 3:
-        return <PaymentDetails payment={payment} bank={bank} />;
+        return (
+          <PaymentDetails
+            payment={payment}
+            meta={paymentOptions[payment]?.meta}
+          />
+        );
       default:
         return null;
     }
-  }
+  };
+
+  const validateStep = (step) => {
+    switch (step) {
+      case 0:
+        return userRef.current.validate();
+      case 1:
+        return deliveryRef.current.validate();
+      case 2:
+        return tos;
+      default:
+        return true;
+    }
+  };
+
+  const [completeOrder] = useAddOrderMutation();
+  const [submitOrder] = useConfirmOrderMutation();
+
+  const navigateTo = (to, current, hook) => {
+    const valid = validateStep(current);
+    setValidStep(() => valid);
+    if (valid && typeof hook === "function") {
+      hook();
+    }
+    valid && setActiveStep(to);
+  };
 
   return (
     <section className="page-wrapper innerpage-section-padding">
       <div className="container-fluid">
+        <Heading title={title} subtitle={subtitle} />
         <div id="checkout-page" className="no-back">
           <div className="row">
             <div className="col-sm-12 offset-lg-2 col-lg-8">
               <Stepper steps={steps} activeStep={activeStep} />
-              <div style={{ padding: "20px" }}>
-                {getSectionComponent()}
+              <div style={{ padding: "20px" }}>{getSectionComponent()}</div>
+              <div
+                className={`d-flex ${
+                  activeStep !== 0 && activeStep !== steps.length - 1
+                    ? "justify-content-between"
+                    : "justify-content-end"
+                }`}
+                style={{ padding: "0 20px" }}
+              >
                 {activeStep !== 0 && activeStep !== steps.length - 1 && (
                   <button
+                    className="btn"
                     onClick={() => navigateTo(activeStep - 1, activeStep)}
                   >
                     Previous
@@ -204,9 +231,23 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
                 )}
                 {activeStep !== steps.length - 1 && (
                   <button
-                    onClick={() => navigateTo(activeStep + 1, activeStep)}
+                    className="btn"
+                    onClick={() =>
+                      navigateTo(
+                        activeStep + 1,
+                        activeStep,
+                        steps[activeStep].key === "confirm"
+                          ? () => submitOrder()
+                          : null
+                      )
+                    }
                   >
                     Next
+                  </button>
+                )}
+                {activeStep === steps.length - 1 && (
+                  <button className="btn" onClick={() => completeOrder()}>
+                    Finish
                   </button>
                 )}
               </div>

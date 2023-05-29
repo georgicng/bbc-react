@@ -33,7 +33,7 @@ const User = forwardRef(function User({ user, cityList, onChange }, ref) {
       lastName: { type: "string", title: "Last name" },
       email: { type: "string", title: "Email" },
       phone: { type: "string", title: "Phone" },
-      address: { type: "string", title: "address" },
+      address: { type: "string", title: "Address" },
       landmark: { type: "string", title: "Nearest Landmark" },
       city: {
         type: "string",
@@ -87,6 +87,7 @@ const User = forwardRef(function User({ user, cityList, onChange }, ref) {
       schema={schema}
       uiSchema={uiSchema}
       validator={validator}
+      showErrorList={false}
       onChange={({ formData }) => onChange("user", formData)}
       onError={(e) => console.log(e)}
     />
