@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import useLoader from "../hooks/useLoader";
 import useCart from "../hooks/useCart";
 import {
@@ -23,8 +24,8 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
   const {
     data: options,
     isLoading,
-    error,
-    refetch,
+    // error,
+    // refetch,
   } = useGetCheckoutOptionsQuery();
   useLoader(isLoading);
 
@@ -58,11 +59,14 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     payment,
     express,
     shipping,
+    order,
+    orderId,
     addUserDetails,
     addShipping,
     addPaymentMethod,
     addDeliveryPeriod,
     acceptTerms,
+    addOrderId,
   } = useCart();
 
   const timeOptions = useMemo(
@@ -191,8 +195,22 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     }
   };
 
-  const [completeOrder] = useAddOrderMutation();
-  const [submitOrder] = useConfirmOrderMutation();
+  const [completeOrder, { isLoading: finishing }] = useAddOrderMutation();
+  const [submitOrder, { data: orderReference, isLoading: submitting }] =
+    useConfirmOrderMutation();
+
+  const navigate = useNavigate();
+  const complete = async () => {
+    if (payment === "transfer") {
+      const payload = {
+        order: orderId,
+        payment: "Transfer",
+        confirm: true,
+      };
+      await completeOrder(payload);
+      navigate("/success");
+    }
+  };
 
   const navigateTo = (to, current, hook) => {
     const valid = validateStep(current);
@@ -235,12 +253,16 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
                 {activeStep !== steps.length - 1 && (
                   <button
                     className="btn"
+                    disabled={steps[activeStep].key === "confirm" && submitting}
                     onClick={() =>
                       navigateTo(
                         activeStep + 1,
                         activeStep,
                         steps[activeStep].key === "confirm"
-                          ? () => submitOrder()
+                          ? async () => {
+                              await submitOrder(order);
+                              addOrderId(orderReference.order_id);
+                            }
                           : null
                       )
                     }
@@ -249,7 +271,11 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
                   </button>
                 )}
                 {activeStep === steps.length - 1 && (
-                  <button className="btn" onClick={() => completeOrder()}>
+                  <button
+                    className="btn"
+                    disabled={finishing}
+                    onClick={complete}
+                  >
                     Finish
                   </button>
                 )}

@@ -6,11 +6,13 @@ export const orderSlice = createSlice({
     cart: [],
     shipping: {type: '', id: '', rate: 0, express: 0},
     payment: "",
-    coupon: false,
+    coupon: '',
     discount: 0,
     user: {},
     tos: false,
     delivery: { date: '', time: '' },
+    tax: 0,
+    id: 0
   },
   reducers: {
     add: (state, { payload }) => {
@@ -35,8 +37,9 @@ export const orderSlice = createSlice({
     setDelivery: (state, { payload }) => {
       state.delivery = payload;
     },
-    setDiscount: (state, { payload }) => {
-      state.discount = payload;
+    setDiscount: (state, { payload: { coupon, discount } }) => {
+      state.coupon = coupon;
+      state.discount = discount;
     },
     setUser: (state, { payload }) => {
       state.user = payload;
@@ -44,9 +47,12 @@ export const orderSlice = createSlice({
     setTerms: (state, { payload }) => {
       state.tos = payload;
     },
+    setOrderId(state, {payload}) {
+      state.id = payload;
+    }
   },
 });
 
-export const { add, remove, update, setUser, setShipping, setPayment, setDelivery, setTerms } = orderSlice.actions;
+export const { add, remove, update, setUser, setShipping, setPayment, setDelivery, setTerms, setOrderId, setDiscount } = orderSlice.actions;
 
 export default orderSlice.reducer;

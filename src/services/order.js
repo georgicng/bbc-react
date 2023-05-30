@@ -56,7 +56,7 @@ export const orderService = apiService.injectEndpoints({
 export const {
   useAddOrderMutation,
   useConfirmOrderMutation,
-  useGetCouponValueQuery,
+  useLazyGetCouponValueQuery,
   useGetShippingMethodsQuery,
   useGetPaymentMethodsQuery,
   useGetCheckoutOptionsQuery,
