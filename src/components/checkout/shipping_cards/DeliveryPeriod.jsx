@@ -1,24 +1,9 @@
-import { useRef, forwardRef, useImperativeHandle } from "react";
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 
-const DeliveryPeriod = forwardRef(function DeliveryPeriod(
-  { valid, timeOptions, delivery, onChange },
-  ref
-) {
-  const formRef = useRef();
+function DeliveryPeriod(
+  { showError, timeOptions, delivery, onChange }) {
 
-  useImperativeHandle(
-    ref, // forwarded ref
-    function () {
-      return {
-        validate() {
-          return formRef.current.validateForm();
-        },
-      }; // the forwarded ref value
-    },
-    []
-  );
   const schema = {
     type: "object",
     properties: {
@@ -38,11 +23,10 @@ const DeliveryPeriod = forwardRef(function DeliveryPeriod(
   };
 
   return (
-    <div className={`${!valid ? "red" : ""} card my-3`}>
+    <div className={`${showError ? "red" : ""} card my-3`}>
       <div className="card-header">Delivery Day</div>
       <div className="card-body">
         <Form
-          ref={formRef}
           formData={delivery}
           schema={schema}
           uiSchema={uiSchema}
@@ -55,11 +39,11 @@ const DeliveryPeriod = forwardRef(function DeliveryPeriod(
           be
         </small>
       </div>
-      {!valid && (
-        <div className="card-body error">Please select a delivery time</div>
+      {showError && (
+        <div className="card-body error">Please select a delivery date && time</div>
       )}
     </div>
   );
-});
+};
 
 export default DeliveryPeriod;

@@ -123,9 +123,8 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
     { title: "Complete Order", icon: "fa fa-credit-card", key: "pay" },
   ];
   const [activeStep, setActiveStep] = useState(0);
-  const [validStep, setValidStep] = useState(false);
+  const [invalid, setInvalid] = useState(false);
   const userRef = useRef();
-  const deliveryRef = useRef();
   const getSectionComponent = () => {
     switch (activeStep) {
       case 0:
@@ -140,8 +139,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
       case 1:
         return (
           <ShippingDetails
-            ref={deliveryRef}
-            valid={validStep}
+            showErrors={invalid}
             shippingRate={shippingRate}
             delivery={delivery}
             timeOptions={timeOptions}
@@ -164,6 +162,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
             subtotal={subtotal}
             total={total}
             shippingRate={shippingRate}
+            showError={invalid}
             onChange={handleChange}
           />
         );
@@ -184,7 +183,7 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
       case 0:
         return userRef.current.validate();
       case 1:
-        return deliveryRef.current.validate();
+        return delivery?.date && delivery?.time && shipping?.id && payment;
       case 2:
         return tos;
       default:
@@ -197,11 +196,15 @@ const Checkout = ({ title = "Checkout", subtitle = "Complete your order" }) => {
 
   const navigateTo = (to, current, hook) => {
     const valid = validateStep(current);
-    setValidStep(() => valid);
-    if (valid && typeof hook === "function") {
+    if (!valid) {
+      setInvalid(true);
+      return;
+    }
+    setInvalid(false);
+    if (typeof hook === "function") {
       hook();
     }
-    valid && setActiveStep(to);
+    setActiveStep(to);
   };
 
   return (

@@ -1,5 +1,5 @@
 function ShippingMethod({
-  valid,
+  showError,
   user,
   shipping,
   shippingOptions,
@@ -16,7 +16,7 @@ function ShippingMethod({
   }
 
   return (
-    <div className={`${!valid && "red"} card my-3`}>
+    <div className={`${showError && "red"} card my-3`}>
       <div className="card-header">Delivery Method</div>
       {Object.entries(shippingOptions).map(([key, value]) => (
         <div className="card-body" key={key}>
@@ -96,7 +96,7 @@ function ShippingMethod({
           )}
         </div>
       ))}
-      {!valid && (
+      {showError && (
         <div className="card-body error">Please select a delivery method</div>
       )}
     </div>

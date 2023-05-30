@@ -16,6 +16,7 @@ const Shipping = forwardRef(function Shipping(
     shipping,
     shippingOptions,
     cityShippingMap,
+    showErrors,
     onChange,
   },
   ref
@@ -24,7 +25,7 @@ const Shipping = forwardRef(function Shipping(
     <div className="row">
       <div className="col-md-6 mb-3">
         <ShippingMethod
-          valid={valid && shipping}
+          showError={showErrors && !shipping?.id}
           user={user}
           shipping={shipping}
           shippingOptions={shippingOptions}
@@ -36,13 +37,14 @@ const Shipping = forwardRef(function Shipping(
           valid={valid && delivery?.time && delivery?.date}
           delivery={delivery}
           timeOptions={timeOptions}
+          showError={showErrors && !(delivery?.date && delivery?.time)}
           onChange={onChange}
         />
       </div>
       <div className="col-md-6 mb-3">
         <ShippingRate shippingRate={shippingRate} />
         <PaymentMethod
-          valid={valid & payment}
+          showError={showErrors && !payment}
           payment={payment}
           paymentOptions={paymentOptions}
           onChange={onChange}

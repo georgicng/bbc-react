@@ -1,6 +1,6 @@
-function PaymentMethod({ valid, payment, paymentOptions, onChange }) {
+function PaymentMethod({ showError, payment, paymentOptions, onChange }) {
   return (
-    <div className={`${!valid ? "red" : ""} card my-3`}>
+    <div className={`${showError ? "red" : ""} card my-3`}>
       <div className="card-header">Payment Method</div>
       <div className="card-body">
         {paymentOptions.map((item) => (
@@ -10,7 +10,7 @@ function PaymentMethod({ valid, payment, paymentOptions, onChange }) {
               id={item.id}
               value={item.id}
               className="custom-control-input"
-              checked={payment === item.id}              
+              checked={payment === item.id}
               onChange={(e) => onChange("payment", e.target.value)}
             />
             <label
@@ -22,10 +22,10 @@ function PaymentMethod({ valid, payment, paymentOptions, onChange }) {
             </label>
           </div>
         ))}
-      </div>      
-      {!valid && (
-          <div className="card-body error">Please select a payment method</div>
-        )}
+      </div>
+      {showError && (
+        <div className="card-body error">Please select a payment method</div>
+      )}
     </div>
   );
 }

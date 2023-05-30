@@ -1,4 +1,4 @@
-import { useRef, forwardRef, useImperativeHandle } from "react";
+import { useRef, useMemo, forwardRef, useImperativeHandle } from "react";
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 
@@ -17,51 +17,58 @@ const User = forwardRef(function User({ user, cityList, onChange }, ref) {
     []
   );
 
-  const schema = {
-    type: "object",
-    required: [
-      "firstName",
-      "lastName",
-      "email",
-      "phone",
-      "address",
-      "landmark",
-      "city",
-    ],
-    properties: {
-      firstName: { type: "string", title: "First name" },
-      lastName: { type: "string", title: "Last name" },
-      email: { type: "string", title: "Email" },
-      phone: { type: "string", title: "Phone" },
-      address: { type: "string", title: "Address" },
-      landmark: { type: "string", title: "Nearest Landmark" },
-      city: {
-        type: "string",
-        title: "City",
-        enum: cityList,
-      },
-    },
-    allOf: [
-      {
-        if: {
-          properties: {
-            city: {
-              const: "Other",
-            },
-          },
-        },
-        then: {
-          properties: {
-            altCity: {
-              type: "string",
-              title: "Other City" 
-            },
-          },
-          required: ["altCity"],
+  const schema = useMemo(
+    () => ({
+      type: "object",
+      required: [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "address",
+        "landmark",
+        "city",
+      ],
+      properties: {
+        firstName: { type: "string", title: "First name" },
+        lastName: { type: "string", title: "Last name" },
+        email: { type: "string", title: "Email" },
+        phone: { type: "string", title: "Phone" },
+        address: { type: "string", title: "Address" },
+        landmark: { type: "string", title: "Nearest Landmark" },
+        city: {
+          type: "string",
+          title: "City",
+          enum: cityList,
         },
       },
-    ],
-  };
+      ...(user.city
+        ? {
+            allOf: [
+              {
+                if: {
+                  properties: {
+                    city: {
+                      const: "Other",
+                    },
+                  },
+                },
+                then: {
+                  properties: {
+                    altCity: {
+                      type: "string",
+                      title: "Other City",
+                    },
+                  },
+                  required: ["altCity"],
+                },
+              },
+            ],
+          }
+        : {}),
+    }),
+    [user, cityList]
+  );
 
   const uiSchema = {
     firstName: {

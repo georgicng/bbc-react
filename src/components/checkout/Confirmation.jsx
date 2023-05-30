@@ -9,6 +9,7 @@ function Confirmation({
   shippingRate,
   subtotal,
   tos,
+  showError,
   onChange,
 }) {
   return (
@@ -42,7 +43,7 @@ function Confirmation({
             </Link>
           </h4>
         </label>
-        {!tos && (
+        {showError && !tos && (
           <div className="error">
             You are required to agree to the terms and conditions
           </div>
